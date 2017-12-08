@@ -21,6 +21,7 @@ const tooBar = [
     '|',
     'title_h3', //标题
     'bold', //加粗
+    'forecolor',
     '|',
     'horizontal', //分隔线
     'insertorderedlist2',
@@ -31,12 +32,14 @@ const tooBar = [
     'justifyright',
     '|',
     'insert_video',
+    'new_link',
     'simpleupload',
     'insert_image',
     'insert_card',
     '|',
     'remote_catch',
-    'drafts','full_screen'
+    'drafts',
+    'full_screen'
   ]
 ]
 

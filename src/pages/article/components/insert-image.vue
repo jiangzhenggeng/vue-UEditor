@@ -1,38 +1,5 @@
 <style lang="less">
-  .dialog__bottom-wrap {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: flex-end;
-    padding: 15px;
-    border-top: 1px solid rgba(0, 0, 0, 0.2);
-    .dialog__bottom {
-      @h: 42px;
-      display: block;
-      background: #F66039;
-      color: #fff;
-      font-size: 14px;
-      text-align: center;
-      height: @h;
-      line-height: @h;
-      width: 120px;
-      border-radius: 3px;
-      cursor: pointer;
-      user-select: none;
-      &:active {
-        opacity: 0.8;
-      }
-    }
-    .dialog__bottom-left {
-      background: #D8D8D8;
-    }
-    .dialog__insert-type {
-      cursor: pointer;
-      user-select: none;
-      color: #f86337;
-      text-decoration: underline;
-    }
-  }
+  @import "./bottom-btn";
 </style>
 <template>
   <transition name="window__modal">
@@ -52,8 +19,8 @@
         <div class="dialog__insert-type" @click="mode=mode==1?2:1">
           {{ mode==1?'分段插入':'连续插入'}}
         </div>
-        <div class="dialog__bottom dialog__bottom-left mgl10" @click="close">关闭</div>
-        <div class="dialog__bottom dialog__bottom-right mgl10" @click="clickOkInsertImage">
+        <div class="dialog__bottom gary" @click="close">关闭</div>
+        <div class="dialog__bottom red" @click="clickOkInsertImage">
           {{selectedList.length?'插入选中':'全部插入'}}
         </div>
       </div>

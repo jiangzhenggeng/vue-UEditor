@@ -4,6 +4,51 @@ export function createId() {
   return 'id-' + (new Date().getTime()) + '' + (Math.random() + '').replace('.', '')
 }
 
+export function editorAddEventListener(vm, editor) {
+
+  editor.addListener("beforepaste", function (type, html) {
+    //过滤多余的空标签
+    var content = html.html;
+    content = content.replace(/<p[^>]*><\/p>/ig, '')
+      .replace(/<p[^>]*><br[^>]*\/><\/p>/ig, '')
+      .replace(/<p[^>]*><span[^>]*><\/span><\/p>/ig, '')
+      .replace(/<p[^>]*><span[^>]*><br[^>]*\/><\/span><\/p>/ig, '')
+    html.html = content;
+  });
+
+  var checkImageStyleId = createId()
+  editor.addListener("afterpaste", function () {
+    //检查图片地址合法性
+    //如果不合法就加上红色的边框
+    if (!$(this.document).find('#' + checkImageStyleId).length) {
+      $(this.document).find('head').append('<style id="' + checkImageStyleId + '">.edui-image-not-jiguo-zdm-addr{box-shadow: 0 0 0px 8px red;}</style>');
+    }
+    $(this.body).find('img[src]').each(function () {
+      var src = $(this).attr('src')
+      //出去视频图片地址
+      if (
+        $(this).hasClass('edui-faked-video') ||
+        //自己服务器绝对地址
+        (src.substr(0, 1) == '/' && src != '//') ||
+        //自己服务器相对地址
+        (src.substr(0, 8) != 'https://' && src.substr(0, 7) != 'http://')
+      ) {
+        return
+      }
+      //打上红色边框
+      if ($(this).attr('src').indexOf('s1.jiguo.com') === -1) {
+        $(this).addClass('edui-image-not-jiguo-zdm-addr');
+      }
+    });
+  });
+
+  //获取产品卡片数量，并在页面上显示相应信息
+  editor.addListener("contentChange", function () {
+
+  });
+
+}
+
 export function editorReady(vm, editor) {
   vm.$emit('editor-ready', vm.editor = editor)
   vm.content && editor.setContent(vm.content)

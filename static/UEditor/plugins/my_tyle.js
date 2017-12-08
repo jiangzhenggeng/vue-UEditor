@@ -81,7 +81,7 @@ UE.plugins['my_style'] = function () {
           me[flage] = !me[flage]
           if (command === 'full_screen') {
             me.$emitEvent(command, me[flage])
-          }else if (me.queryCommandState(command) == 1) {
+          } else if (me.queryCommandState(command) == 1) {
             me.$emitEvent(command, me[flage])
           }
         },
@@ -93,6 +93,55 @@ UE.plugins['my_style'] = function () {
         }
       }
     })(commandsDialog[i])
+  }
+
+  me.commands['new_link'] = {
+    execCommand: function () {
+      var me = this
+      var state = me.queryCommandState('new_link')
+
+      var range = me.selection.getRange()
+      var rangeLink = domUtils.findParentByTagName(range.getCommonAncestor(), 'a', true)
+      //已经有链接
+      //目标：去除链接
+      if (state == 1) {
+        var newEle = me.document.createTextNode(rangeLink.textContent)
+        rangeLink.parentElement.replaceChild(newEle, rangeLink)
+      }
+      //弹窗设置链接
+      else if (state == 0) {
+        me.$emitEvent('new_link', range)
+      }
+      //不可设置链接
+      else if (state == -1) {
+
+      }
+    },
+    queryCommandState: function () {
+
+      var editor = this
+      var range = editor.selection.getRange()
+      var rangeCommon = range.getCommonAncestor()
+      var rangeLink = domUtils.findParentByTagName(rangeCommon, 'a', true)
+      if (rangeLink) {
+        if (!range.collapsed) {
+          return 0
+        }
+        return 1
+      }
+      if (range.collapsed) {
+        return -1
+      }
+
+      var fragment = range.cloneContents()
+      var node = document.createElement("div")
+      node.appendChild(fragment)
+      //包含有图片
+      if (node.getElementsByTagName('img').length) {
+        return -1
+      }
+      return 0
+    }
   }
 
 }

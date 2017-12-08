@@ -13,6 +13,7 @@
     <create-editor
       @editor-ready="editorReady"
       @trigger:click:event="TriggerClickEvent"
+      :content="content"
     />
     <inert-video
       :visibile.sync="InsertVideoVisibile"
@@ -26,6 +27,10 @@
       :visibile.sync="InsertCardVisibile"
       @insert:html="InsertHtml"
     />
+    <inert-link
+      :visibile.sync="InsertLinkVisibile"
+      @insert:html="InsertHtml"
+    />
     <div v-for="item in listArray">呼呼呼🐯<br></div>
   </div>
 </template>
@@ -36,6 +41,9 @@
   import InertVideo from '../components/insert-video.vue'
   import InertImage from '../components/insert-image.vue'
   import InertCard from '../components/insert-card.vue'
+  import InertLink from '../components/insert-link.vue'
+
+  const content = require('raw-loader!./content.php3')
 
   export default {
     data() {
@@ -44,12 +52,15 @@
         InsertVideoVisibile: false,
         InsertImageVisibile: false,
         InsertCardVisibile: false,
+        InsertLinkVisibile: false,
+        content: content
       }
     },
     components: {
       InertVideo,
       InertImage,
-      InertCard
+      InertCard,
+      InertLink
     },
     methods: {
       editorReady(editor) {
@@ -70,6 +81,10 @@
           }
           case 'insert_card': {
             this.InsertCardVisibile = true
+            break
+          }
+          case 'new_link': {
+            this.InsertLinkVisibile = true
             break
           }
         }

@@ -31,8 +31,9 @@
     editorReady,
     editorBindScrollFun,
     editorBindToolBarTips,
-    editorRefresh
-  } from './create-id'
+    editorRefresh,
+    editorAddEventListener
+  } from './createTools'
   import $ from 'jquery'
 
   export default {
@@ -94,6 +95,9 @@
       $(window).on('scroll.editor', function () {
         editorBindScrollFun(vm, vm.editor)
       })
+
+      //编辑器绑定事件
+      editorAddEventListener(vm, vm.editor)
 
     },
     methods: {

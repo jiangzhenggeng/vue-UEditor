@@ -69,7 +69,7 @@ window.UEDITOR_CONFIG = {
     var toolsTips = {
       'undo': '撤销 （' + command + ' Z）',
       'redo': '重做 （' + command + ' ' + shift + ' Z）',
-      'title_h3': '小标题',
+      'title_h3': '小标题','new_link':'超链接',
       'remote_catch': '抓取图片',
       'insert_card': '插入卡片',
       'simpleupload': '插入单图',

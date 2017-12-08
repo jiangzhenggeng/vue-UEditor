@@ -27,7 +27,6 @@
     }
     .model__content {
       background: #fff;
-      width: 660px;
       height: auto;
       border-radius: 3px;
       box-shadow: 0 0 20px 0px rgba(0, 0, 0, 0.5), 0 0 0px 1px rgba(0, 0, 0, 0.2);
@@ -75,91 +74,6 @@
     }
 
   }
-
-  .video__wrap {
-    .video__input-box {
-      background-color: #F5F5F5;
-      input {
-        outline: none;
-        border: none;
-        width: 100%;
-        height: 45px;
-        display: block;
-        padding: 0 10px;
-        background: transparent;
-        font-size: 14px;
-        box-sizing: border-box;
-      }
-    }
-    .video__body {
-      height: 350px;
-      line-height: 350px;
-      text-align: center;
-      font-size: 14px;
-      color: #FF9A7F;
-      background-color: #505050;
-      margin: 15px auto;
-    }
-    .video__footer {
-      font-size: 0;
-    }
-    .video__btn {
-      font-size: 14px;
-      width: 300px;
-      height: 50px;
-      line-height: 50px;
-      text-align: center;
-      color: #333;
-      background-color: #D8D8D8;
-      display: inline-block;
-      width: 308px;
-      cursor: pointer;
-      user-select: none;
-      img {
-        animation: rotate 0.5s linear infinite;
-        position: relative;
-        height: 18px;
-        margin-left: 5px;
-        margin-top: -3px;
-        display: none;
-      }
-      &:nth-child(2) {
-        float: right;
-      }
-      &.video__ok {
-        color: #fff;
-        background-color: #F66039;
-        float: right;
-      }
-      &.video__check {
-        color: #fff;
-        background-color: #F66039;
-        float: right;
-        img {
-          display: inline;
-        }
-      }
-    }
-
-    .previewvideo__msg {
-      z-index: 1;
-    }
-    .previewvideo__video {
-      z-index: 2;
-      position: absolute;
-      left: 0;
-      top: 0;
-    }
-  }
-
-  @keyframes rotate {
-    from {
-      transform: rotate(0deg)
-    }
-    to {
-      transform: rotate(359deg)
-    }
-  }
 </style>
 
 <template>
@@ -167,7 +81,7 @@
     <div class="model__table">
       <div class="model__td">
         <div class="model__inner">
-          <div class="model__content">
+          <div class="model__content" :style="`width:${width}px`">
             <div class="model__header" @mousedown="mousedown($event)">
               <div class="model__title">{{ title }}</div>
               <div class="model__close" @click="close">×</div>
@@ -193,6 +107,10 @@
       title: {
         type: String,
         default: '我是标题'
+      },
+      width: {
+        type: Number,
+        default: 660
       }
     },
     mounted() {
