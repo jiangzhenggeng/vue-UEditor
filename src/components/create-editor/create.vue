@@ -2,8 +2,10 @@
   @import "../../style/scss/helpers/functions";
 
   .editor__wrap {
-    background: #f2f2f2;
+    background: transparent;
     &.full__screen {
+      background: #f2f2f2;
+
       &, .edui-editor-toolbarbox {
         position: fixed;
         left: 0;
@@ -13,6 +15,7 @@
     }
     .editor__inner {
       margin: auto;
+      background: #ffffff;
     }
   }
 </style>

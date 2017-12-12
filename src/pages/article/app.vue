@@ -1,4 +1,5 @@
 <style lang="scss">
+  @import './element-ui';
   $IMAGES_PATH: '../../style/images/';
   @import '../../style/scss/app.scss';
   /*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/

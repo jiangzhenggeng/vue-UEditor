@@ -27,6 +27,9 @@
       color: #FF9A7F;
       background-color: #505050;
       margin: 15px auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     .video__footer {
       font-size: 0;

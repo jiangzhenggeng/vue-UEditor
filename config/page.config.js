@@ -10,7 +10,7 @@ module.exports = [
     name: 'article',
     main: './src/pages/article/main.js',
     options: {
-      filename: path.resolve(__dirname, '../dist/index.html'),
+      filename: path.resolve(__dirname, '../dist/index.php'),
       template: getTplPath('article'),
     },
     subModel: {

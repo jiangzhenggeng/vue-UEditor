@@ -9,7 +9,6 @@
 
 <template>
   <div class="editor__wrap">
-    <div v-for="item in listArray">哈哈哈😄<br></div>
     <create-editor
       @editor-ready="editorReady"
       @trigger:click:event="TriggerClickEvent"
@@ -31,70 +30,72 @@
       :visibile.sync="InsertLinkVisibile"
       @insert:html="InsertHtml"
     />
-    <div v-for="item in listArray">呼呼呼🐯<br></div>
   </div>
 </template>
 
 <script>
 
-  import {mapState, mapActions} from 'vuex'
-  import InertVideo from '../components/insert-video.vue'
-  import InertImage from '../components/insert-image.vue'
-  import InertCard from '../components/insert-card.vue'
-  import InertLink from '../components/insert-link.vue'
+	import {mapState, mapActions} from 'vuex'
+	import InertVideo from '../components/insert-video.vue'
+	import InertImage from '../components/insert-image.vue'
+	import InertCard from '../components/insert-card.vue'
+	import InertLink from '../components/insert-link.vue'
 
-  const content = require('raw-loader!./content.php3')
-
-  export default {
-    data() {
-      return {
-        listArray: Array(50).fill(3),
-        InsertVideoVisibile: false,
-        InsertImageVisibile: false,
-        InsertCardVisibile: false,
-        InsertLinkVisibile: false,
-        content: content
-      }
-    },
-    components: {
-      InertVideo,
-      InertImage,
-      InertCard,
-      InertLink
-    },
-    methods: {
-      editorReady(editor) {
-        this.$nextTick(() => {
-          this.hidePageLoading()
-        })
-        this.editor = editor
-      },
-      TriggerClickEvent(eventType) {
-        switch (eventType) {
-          case 'insert_video': {
-            this.InsertVideoVisibile = true
-            break
-          }
-          case 'insert_image': {
-            this.InsertImageVisibile = true
-            break
-          }
-          case 'insert_card': {
-            this.InsertCardVisibile = true
-            break
-          }
-          case 'new_link': {
-            this.InsertLinkVisibile = true
-            break
-          }
-        }
-      },
-      InsertHtml(html) {
-        this.editor.execCommand('inserthtml', html)
-      },
-      ...mapActions(['hidePageLoading'])
-    }
-  }
+	export default {
+		data() {
+			return {
+				InsertVideoVisibile: false,
+				InsertImageVisibile: false,
+				InsertCardVisibile: false,
+				InsertLinkVisibile: false,
+				content: window.ueditorContent || ''
+			}
+		},
+		components: {
+			InertVideo,
+			InertImage,
+			InertCard,
+			InertLink
+		},
+		methods: {
+			editorReady(editor) {
+				this.$nextTick(() => {
+					this.hidePageLoading()
+				})
+				this.editor = editor
+			},
+			TriggerClickEvent(eventType) {
+				switch (eventType) {
+					case 'insert_video': {
+						this.InsertVideoVisibile = true
+						break
+					}
+					case 'insert_image': {
+						this.InsertImageVisibile = true
+						break
+					}
+					case 'insert_card': {
+						this.InsertCardVisibile = true
+						break
+					}
+					case 'new_link': {
+						this.InsertLinkVisibile = true
+						break
+					}
+				}
+			},
+			InsertHtml(html, callBack) {
+				if (typeof callBack == 'function') {
+					if (callBack(this.editor)) {
+						this.editor.execCommand('inserthtml', html)
+					}
+				} else {
+					this.editor.execCommand('inserthtml', html)
+				}
+			},
+			...mapActions(['hidePageLoading'])
+		}
+	}
 </script>
 
 

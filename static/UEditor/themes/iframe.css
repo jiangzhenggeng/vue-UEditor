@@ -18,6 +18,16 @@
   display: block;
   margin: auto;
 }
+.__editor__container__ iframe{
+  display: block;
+  margin: auto;
+  border: none;
+  overflow: hidden;
+}
+.__editor__container__ iframe[data-cid] {
+  width: 360px;
+  height: 150px;
+}
 
 .__editor__container__ .editor__reinstate-wrap {
   background: rgba(0, 0, 0, 0.90);

@@ -6,9 +6,9 @@ module.exports = {
   page: require('./page.config'),
   build: {
     env: require('./prod.env'),
-    assetsRoot: path.resolve(__dirname, '../dist'),
-    assetsSubDirectory: '',
-    assetsPublicPath: 'static',
+		assetsRoot: path.resolve(__dirname, '../../cdn/admin@2.0'),
+		assetsSubDirectory: '',
+		assetsPublicPath: 'http://cdn.jiguo.com/admin@2.0/',
     productionSourceMap: true,
     // Gzip off by default as many popular static hosts such as
     // Surge or Netlify already gzip all static assets for you.
@@ -74,7 +74,12 @@ module.exports = {
           '^/UEditor/php': '/protected/extensions/editor/php'
         },
         changeOrigin: true
-      }
+      },
+			'/admin': {
+				target: 'http://dev.jiguo.com',
+				secure: true,
+				changeOrigin: true
+			}
     },
     // CSS Sourcemaps off by default because relative paths are "buggy"
     // with this option, according to the CSS-Loader README

@@ -13,6 +13,10 @@ const router = new Router({
       path: '/admin/article/add(.*)',
       component: Edit
     },
+		{
+			path: '/admin/article/edit(.*)',
+			component: Edit
+		},
     {
       path: '*',
       redirect: '/admin/article/add.html'
