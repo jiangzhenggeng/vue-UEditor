@@ -97,7 +97,7 @@
       >
         <template slot="slot-data-box" slot-scope="props">
           <ul class="loading__data-wrap">
-            <li v-for="item in props.data" :item="item" :key="item.id">
+            <li v-for="item in props.data" :key="item.id">
               <div class="loading__item">
                 <div class="loading__left">
                   <img :src="`http://s1.jiguo.com/${item.cover}/230x230`"/>
@@ -107,7 +107,7 @@
                   <div class="desc line1" v-html="item.detail"></div>
                   <div class="query">
                     <a class="look blue" :href="`/admin/product/edit.html?id=${item.id}`" target="_blank">查看</a>
-                    <a href="javascript:;" @click="insertCard(item)" class="insert blue mgl10">插入</a>
+                    <a href="javascript:;" @click="insertCard($event,item)" class="insert blue mgl10">插入</a>
                   </div>
                 </div>
               </div>
@@ -181,14 +181,14 @@
 					})
 				}
 			},
-			insertCard(item) {
+			insertCard(e, item) {
 
 				var pId = 'random_id_' + Math.random().toString().replace('.', '');
 				var unique = 'coupon_unique_id_' + pId
 				var cid = item.id
 
 				var iframe = document.createElement('iframe'),
-					btnStyle = 'box-shadow:1px 0px 1px 0 #E6E6E6,1px 1px 2px 0 rgba(0,0,0,0.1);display:block;width:100%;height:165px;max-width:675px !important;overflow:hidden;border:0;margin:0;padding:0;';
+					btnStyle = 'box-shadow:1px 0px 1px 0 #E6E6E6,1px 1px 2px 0 rgba(0,0,0,0.1);display:block;width:100%;height:165px;max-width:675px !important;overflow:hidden;border:0;margin:auto;padding:0;';
 
 				iframe.setAttribute('data-coupon-unique', unique);
 				iframe.setAttribute('data-coupon-cid', cid);
@@ -204,6 +204,8 @@
 						});
 						return false;
 					}
+					// $(e.currentTarget).closest('li').fadeOut(160)
+					_this.$emit('close')
 					return true
 				})
 			}

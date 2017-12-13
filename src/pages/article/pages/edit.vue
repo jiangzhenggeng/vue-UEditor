@@ -13,6 +13,7 @@
       @editor-ready="editorReady"
       @trigger:click:event="TriggerClickEvent"
       :content="content"
+      name="article[message]"
     />
     <inert-video
       :visibile.sync="InsertVideoVisibile"
@@ -40,6 +41,7 @@
 	import InertImage from '../components/insert-image.vue'
 	import InertCard from '../components/insert-card.vue'
 	import InertLink from '../components/insert-link.vue'
+  import $ from 'jquery'
 
 	export default {
 		data() {

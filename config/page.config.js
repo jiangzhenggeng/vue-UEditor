@@ -12,6 +12,11 @@ module.exports = [
     options: {
       filename: path.resolve(__dirname, '../dist/index.php'),
       template: getTplPath('article'),
+			minify: {
+				removeComments: true,
+				collapseWhitespace: true,
+				removeAttributeQuotes: false
+			},
     },
     subModel: {
       UEditor: './static/UEditor/index.js'

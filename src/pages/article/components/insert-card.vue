@@ -5,16 +5,23 @@
     &.model__wrap .model__body {
       padding-top: 0;
     }
+
+    .el-form-item__content {
+      display: flex;
+      min-height: 40px;
+      align-items: center;
+    }
+
+    .el-tabs__active-bar,
+    .el-tabs__nav-wrap::after {
+      height: 1px;
+    }
+
+    .el-tabs__item {
+      font-weight: normal;
+    }
   }
 
-  .el-tabs__active-bar,
-  .el-tabs__nav-wrap::after {
-    height: 1px;
-  }
-
-  .el-tabs__item {
-    font-weight: normal;
-  }
 </style>
 
 
@@ -39,23 +46,13 @@
             @close="close"
           />
         </el-tab-pane>
-        <el-tab-pane label="链接" name="fourth">
+        <el-tab-pane label="临时卡片" name="fourth">
           <insert-card-link
             @insert:html="insertCard"
             @close="close"
           />
         </el-tab-pane>
-        <el-tab-pane label="秒杀" name="fifth">
-          <insert-card-second-kill
-            @insert:html="insertCard"
-            @close="close"
-          />
-        </el-tab-pane>
       </el-tabs>
-      <!--<div class="dialog__bottom-wrap" slot="bottom">-->
-      <!--<div class="dialog__bottom gary" @click="close">关闭</div>-->
-      <!--<div class="dialog__bottom red" @click="clickOk">确定</div>-->
-      <!--</div>-->
     </dialog-base>
   </transition>
 </template>
@@ -64,7 +61,6 @@
 	import InsertCardProduct from './cardComponents/insert-card-product'
 	import InsertCardCoupons from './cardComponents/insert-card-coupons'
 	import InsertCardLink from './cardComponents/insert-card-link'
-	import InsertCardSecondKill from './cardComponents/insert-card-second-kill'
 	import busEvent from './cardComponents/busEvent'
 
 	export default {
@@ -77,12 +73,12 @@
 		components: {
 			InsertCardProduct,
 			InsertCardCoupons,
-			InsertCardLink,
-			InsertCardSecondKill
+			InsertCardLink
 		},
 		created() {
 			busEvent.$on('change:tabbar', (name) => {
 				this.activeName = name
+				this.$emit('update:visibile', true)
 			})
 		},
 		methods: {

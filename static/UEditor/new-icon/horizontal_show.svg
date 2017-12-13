@@ -1,12 +1,11 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="20px" height="2px" viewBox="0 0 20 2" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 46.1 (44463) - http://www.bohemiancoding.com/sketch -->
-    <title>Shape</title>
+
+<svg width="20px" height="10px" viewBox="0 0 20 3" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.1 (47250) - http://www.bohemiancoding.com/sketch -->
     <desc>Created with Sketch.</desc>
     <defs></defs>
     <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="默认" transform="translate(-372.000000, -523.000000)" fill-rule="nonzero" fill="#999999">
-            <path d="M391.655172,523.5 L388.206897,523.5 L375.793103,523.5 L372.344828,523.5 C372.154483,523.5 372,523.509717 372,523.521739 L372,523.76087 L372,524 L372,524.23913 L372,524.478261 C372,524.490283 372.154483,524.5 372.344828,524.5 L375.793103,524.5 L388.206897,524.5 L391.655172,524.5 C391.845517,524.5 392,524.490283 392,524.478261 L392,524.23913 L392,524 L392,523.76087 L392,523.521739 C392,523.509717 391.845517,523.5 391.655172,523.5 Z" id="Shape"></path>
+        <g id="horizontal_show.d0be706" fill="#999999" fill-rule="nonzero">
+            <path d="M19.655172,0 L16.206897,0 L3.793103,0 L0.344828,0 C0.154483,0 0,0.029151 0,0.065217 L0,0.78261 L0,1.5 L0,2.21739 L0,2.934783 C0,2.970849 0.154483,3 0.344828,3 L3.793103,3 L16.206897,3 L19.655172,3 C19.845517,3 20,2.970849 20,2.934783 L20,2.21739 L20,1.5 L20,0.78261 L20,0.065217 C20,0.029151 19.845517,0 19.655172,0 Z" id="Shape"></path>
         </g>
     </g>
 </svg>

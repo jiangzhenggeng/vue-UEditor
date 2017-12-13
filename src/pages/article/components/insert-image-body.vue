@@ -260,180 +260,180 @@
 </template>
 <script>
 
-  import $ from 'jquery'
+	import $ from 'jquery'
 
-  export default {
-    props: {
-      mode: {
-        type: Number,
-        default: 1
-      },
-      value: {
-        type: Array,
-        default: []
-      },
-      visible: {
-        type: Boolean,
-        default: false
-      }
-    },
-    data() {
-      return {
-        options: {
-          target: '/UEditor/php/controller.php?uid=11&code=c20ad4d76fe97759aa27a0c99bff6710&action=uploadimage',
-          testChunks: false,
-          allowDuplicateUploads: true,
-          query: {
-            uid: 11,
-            code: 'c20ad4d76fe97759aa27a0c99bff6710',
-            action: 'uploadimage'
-          },
-          fileParameterName: 'upfile',
-          chunkSize: 8 * 1024 * 1024,
-          progressCallbacksInterval: 300
-        },
-        attrs: {
-          accept: 'image/jpg,image/jpeg,image/png,image/gif'
-        },
-        selectedList: this.value
-      }
-    },
-    watch: {
-      selectedList(newVal) {
-        this.$emit('input', newVal)
-      },
-      visible() {
-        if ($(this.$refs['uploader-list-ul']).find('li').length <= 1) {
-          setTimeout(()=>{
-            $(this.$refs['uploader-btn'].$el).trigger('click')
-          },240)
-        }
-      }
-    },
-    methods: {
-      getInsertHtml() {
-        var html = ''
-        if (!this.selectedList.length) {
-          var array = []
-          for (var i in this.$refs) {
-            if (i.substr(0, 12) == 'success-img-') {
-              array.push(i)
-            }
-          }
-          array.sort(function (a, b) {
-            return parseInt(a.substr(12)) <= parseInt(b.substr(12)) ? -1 : 1
-          })
+	export default {
+		props: {
+			mode: {
+				type: Number,
+				default: 1
+			},
+			value: {
+				type: Array,
+				default: []
+			},
+			visible: {
+				type: Boolean,
+				default: false
+			}
+		},
+		data() {
+			return {
+				options: {
+					target: UEDITOR_CONFIG.serverUrl + '&action=uploadimage',
+					testChunks: false,
+					allowDuplicateUploads: true,
+					query: {
+						uid: 11,
+						code: 'c20ad4d76fe97759aa27a0c99bff6710',
+						action: 'uploadimage'
+					},
+					fileParameterName: 'upfile',
+					chunkSize: 8 * 1024 * 1024,
+					progressCallbacksInterval: 300
+				},
+				attrs: {
+					accept: 'image/jpg,image/jpeg,image/png,image/gif'
+				},
+				selectedList: this.value
+			}
+		},
+		watch: {
+			selectedList(newVal) {
+				this.$emit('input', newVal)
+			},
+			visible() {
+				if ($(this.$refs['uploader-list-ul']).find('li').length <= 1) {
+					setTimeout(() => {
+						$(this.$refs['uploader-btn'].$el).trigger('click')
+					}, 240)
+				}
+			}
+		},
+		methods: {
+			getInsertHtml() {
+				var html = ''
+				if (!this.selectedList.length) {
+					var array = []
+					for (var i in this.$refs) {
+						if (i.substr(0, 12) == 'success-img-') {
+							array.push(i)
+						}
+					}
+					array.sort(function (a, b) {
+						return parseInt(a.substr(12)) <= parseInt(b.substr(12)) ? -1 : 1
+					})
 
-          for (var i = 0; i < array.length; i++) {
-            var item = this.$refs[array[i]]
-            if (item.length) {
-              if (this.mode == 1) {
-                html += '<p style="text-align:center">' + $(item[0]).prop('outerHTML') + '</p>'
-              } else {
-                html += $(item[0]).prop('outerHTML')
-              }
+					for (var i = 0; i < array.length; i++) {
+						var item = this.$refs[array[i]]
+						if (item.length) {
+							if (this.mode == 1) {
+								html += '<p style="text-align:center">' + $(item[0]).prop('outerHTML') + '</p>'
+							} else {
+								html += $(item[0]).prop('outerHTML')
+							}
 
-              this.$refs['uploader'].fileList.forEach((file) => {
-                if (array[i].substr(12) == file.id) {
-                  this.$refs['uploader'].uploader.removeFile(file)
-                }
-              })
-            }
-          }
-          if (this.mode != 1 && html) {
-            html = '<p style="text-align:center">' + html + '</p>'
-          }
-          this.selectedList = []
-          return html
-        }
+							this.$refs['uploader'].fileList.forEach((file) => {
+								if (array[i].substr(12) == file.id) {
+									this.$refs['uploader'].uploader.removeFile(file)
+								}
+							})
+						}
+					}
+					if (this.mode != 1 && html) {
+						html = '<p style="text-align:center">' + html + '</p>'
+					}
+					this.selectedList = []
+					return html
+				}
 
-        this.selectedList.forEach((id) => {
-          var item = this.$refs[id]
-          if (item.length) {
-            if (this.mode == 1) {
-              html += '<p style="text-align:center">' + $(item[0]).prop('outerHTML') + '</p>'
-            } else {
-              html += $(item[0]).prop('outerHTML')
-            }
-          }
-          this.$refs['uploader'].uploader.removeFile(item.file)
-        })
-        if (this.mode != 1 && html) {
-          html = '<p style="text-align:center">' + html + '</p>'
-        }
-        this.selectedList = []
-        return html
-      },
-      insertItem(id, file) {
-        if (this.$refs[id].length) {
-          var html = '<p style="text-align:center">' + $(this.$refs[id][0]).prop('outerHTML') + '</p>'
-          this.$emit('insert:image:event', html)
-          var index = this.selectedList.indexOf(id)
-          if (index !== -1) {
-            this.selectedList.splice(index, 1)
-          }
-          this.$refs['uploader'].uploader.removeFile(file)
-        }
-      },
-      itemClose(file) {
-        this.$refs['uploader'].uploader.removeFile(file)
-      },
-      itemRotation(id, file) {
-        file.rotate = ((file.rotate || 0) + 90) % 360;
-        var logo = '|watermark/1/image/aHR0cDovL3dhdGVybWFyay0xMjUyMTA2MjExLnBpY3NoLm15cWNsb3VkLmNvbS8xNDk3OTQyODk2MjgzNTk0OGNiNzA1NGViZi5wbmc=/gravity/southeast/dx/20/dy/20';
-        var src = 'http://s1.jiguo.com/' + file.respon.field + '?imageView2/2/w/640/q/100|imageMogr2/rotate/' + file.rotate + logo;
-        this.loadingImageMask(src, this.$refs[id][0], file.respon.type)
-      },
-      loadingImageMask(src, img, type) {
-        var tempImg = new Image()
-        var mask = $(img).closest('li').find('.image-loading-status')
-        mask.css('display', 'flex')
-        tempImg.onload = function () {
-          $(img).attr({
-            'src': this.src,
-            '_src': this.src,
-            'data-width': this.width,
-            'data-height': this.height,
-            'data-img-type': type || 2,
-            'data-ratio': this.width / this.height,
-          })
-          mask.css('display', 'none')
-        }
-        tempImg.src = src
-      },
-      successFirstLoadImage(id, file) {
-        var currentImg = $(this.$refs[id][0])
-        if (currentImg.data('first-loading')) {
-          return
-        }
-        var src = 'http://s1.jiguo.com/' + file.respon.field + '/logo';
-        this.loadingImageMask(src, currentImg, file.respon.type)
-        currentImg.data('first-loading', true)
-      },
-      //选中/取消图片
-      selectedItem(id, file) {
-        this.$refs[id].file = file
-        if (this.selectedList.indexOf(id) === -1) {
-          this.selectedList.push(id)
-        } else {
-          var index = this.selectedList.indexOf(id)
-          this.selectedList.splice(index, 1)
-        }
-      },
-      imgLoadEvent(id, file) {
-        var _this = this
-        var reader = new FileReader();
-        reader.onload = function (evt) {
-          if (_this.$refs[id].length) {
-            _this.$refs[id][0].src = evt.target.result
-          }
-        }
-        reader.readAsDataURL(file.file);
-      },
-      filtersSelectedItem(id) {
-        return this.selectedList.indexOf(id) !== -1
-      }
-    },
-    filters: {}
-  }
+				this.selectedList.forEach((id) => {
+					var item = this.$refs[id]
+					if (item.length) {
+						if (this.mode == 1) {
+							html += '<p style="text-align:center">' + $(item[0]).prop('outerHTML') + '</p>'
+						} else {
+							html += $(item[0]).prop('outerHTML')
+						}
+					}
+					this.$refs['uploader'].uploader.removeFile(item.file)
+				})
+				if (this.mode != 1 && html) {
+					html = '<p style="text-align:center">' + html + '</p>'
+				}
+				this.selectedList = []
+				return html
+			},
+			insertItem(id, file) {
+				if (this.$refs[id].length) {
+					var html = '<p style="text-align:center">' + $(this.$refs[id][0]).prop('outerHTML') + '</p>'
+					this.$emit('insert:image:event', html)
+					var index = this.selectedList.indexOf(id)
+					if (index !== -1) {
+						this.selectedList.splice(index, 1)
+					}
+					this.$refs['uploader'].uploader.removeFile(file)
+				}
+			},
+			itemClose(file) {
+				this.$refs['uploader'].uploader.removeFile(file)
+			},
+			itemRotation(id, file) {
+				file.rotate = ((file.rotate || 0) + 90) % 360;
+				var logo = '|watermark/1/image/aHR0cDovL3dhdGVybWFyay0xMjUyMTA2MjExLnBpY3NoLm15cWNsb3VkLmNvbS8xNDk3OTQyODk2MjgzNTk0OGNiNzA1NGViZi5wbmc=/gravity/southeast/dx/20/dy/20';
+				var src = 'http://s1.jiguo.com/' + file.respon.field + '?imageView2/2/w/640/q/100|imageMogr2/rotate/' + file.rotate + logo;
+				this.loadingImageMask(src, this.$refs[id][0], file.respon.type)
+			},
+			loadingImageMask(src, img, type) {
+				var tempImg = new Image()
+				var mask = $(img).closest('li').find('.image-loading-status')
+				mask.css('display', 'flex')
+				tempImg.onload = function () {
+					$(img).attr({
+						'src': this.src,
+						'_src': this.src,
+						'data-width': this.width,
+						'data-height': this.height,
+						'data-img-type': type || 2,
+						'data-ratio': this.width / this.height,
+					})
+					mask.css('display', 'none')
+				}
+				tempImg.src = src
+			},
+			successFirstLoadImage(id, file) {
+				var currentImg = $(this.$refs[id][0])
+				if (currentImg.data('first-loading')) {
+					return
+				}
+				var src = 'http://s1.jiguo.com/' + file.respon.field + '/logo';
+				this.loadingImageMask(src, currentImg, file.respon.type)
+				currentImg.data('first-loading', true)
+			},
+			//选中/取消图片
+			selectedItem(id, file) {
+				this.$refs[id].file = file
+				if (this.selectedList.indexOf(id) === -1) {
+					this.selectedList.push(id)
+				} else {
+					var index = this.selectedList.indexOf(id)
+					this.selectedList.splice(index, 1)
+				}
+			},
+			imgLoadEvent(id, file) {
+				var _this = this
+				var reader = new FileReader();
+				reader.onload = function (evt) {
+					if (_this.$refs[id].length) {
+						_this.$refs[id][0].src = evt.target.result
+					}
+				}
+				reader.readAsDataURL(file.file);
+			},
+			filtersSelectedItem(id) {
+				return this.selectedList.indexOf(id) !== -1
+			}
+		},
+		filters: {}
+	}
 </script>

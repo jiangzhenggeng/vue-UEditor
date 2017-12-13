@@ -24,9 +24,9 @@
   border: none;
   overflow: hidden;
 }
-.__editor__container__ iframe[data-cid] {
+.__editor__container__ iframe[data-cid]:not([height]) {
   width: 360px;
-  height: 150px;
+  height: 161px;
 }
 
 .__editor__container__ .editor__reinstate-wrap {

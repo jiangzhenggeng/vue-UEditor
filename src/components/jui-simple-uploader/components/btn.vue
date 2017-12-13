@@ -1,5 +1,5 @@
 <template>
-  <button class="uploader-btn" ref="btn" v-show="support">
+  <button class="uploader-btn" type="button" ref="btn" v-show="support">
     <slot></slot>
   </button>
 </template>

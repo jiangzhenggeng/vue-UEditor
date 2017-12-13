@@ -413,7 +413,7 @@
                         <div class="Z-list-info">
                             <div class="Z-row">
                                 <span class="Z-name">关键词：<br><a class="blue" id="query-write-keyword" href="javascript:;">一键推荐</a></span>
-                                <textarea class="Z-txt" name="article[keyword]" id="A-keywords" placeholder="关键词" /><?php echo $blog['keyword'];?></textarea>
+                                <textarea class="Z-txt" name="article[keyword]" id="A-keywords" placeholder="关键词"><?php echo $blog['keyword'];?></textarea>
                                 <span class="red" style="margin-left: 70px;">请使用英文逗号分隔关键词</span>
                                 <div class="advice-keyword none"></div>
                             </div>

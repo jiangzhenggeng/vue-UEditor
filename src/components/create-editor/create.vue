@@ -23,7 +23,7 @@
 <template>
   <div class="editor__wrap" ref="editor__wrap">
     <div class="editor__inner" :style="`width:${width}px`">
-      <textarea :id="editorId" :style="`height:${height}px;width:${width}px`"></textarea>
+      <textarea :name="name" :id="editorId" :style="`height:${height}px;width:${width}px`"></textarea>
     </div>
   </div>
 </template>
@@ -42,6 +42,10 @@
   export default {
     name: 'create-editor',
     props: {
+			name: {
+				type: String,
+				default: ''
+			},
       content: {
         type: String,
         default: ''

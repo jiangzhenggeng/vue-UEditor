@@ -1,4 +1,5 @@
 import $ from 'jquery'
+import tools from '../../tools'
 
 export function createId() {
 	return 'id-' + (new Date().getTime()) + '' + (Math.random() + '').replace('.', '')
@@ -59,6 +60,13 @@ export function editorReady(vm, editor) {
 	vm['ToolBarInner'] = vm['ToolBarWrap'].find('.edui-editor-toolbarbox-inner:first')
 	editorRefresh(vm, editor)
 	editorBindScrollFun(vm, editor)
+
+	var resizeFn = tools.debounce(()=>{
+		editorRefresh(vm, editor)
+	})
+	$(window).resize(function () {
+		resizeFn()
+	})
 }
 
 export function editorRefresh(vm, editor) {

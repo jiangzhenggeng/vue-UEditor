@@ -11,41 +11,40 @@
       display: block;
       width: 100%;
     }
-  }
-
-  .avatar-uploader {
-    .el-upload {
-      width: 80px;
-      height: 80px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border: 1px dashed #b4bccc;
-      border-radius: 5px;
-      overflow: hidden;
-      &:active {
-        opacity: 0.7;
+    .avatar-uploader {
+      .el-upload {
+        width: 80px;
+        height: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px dashed #b4bccc;
+        border-radius: 5px;
+        overflow: hidden;
+        &:active {
+          opacity: 0.7;
+        }
       }
-    }
-    .el-icon-upload {
-      font-size: 34px;
-      color: #b4bccc;
-    }
-    img {
-      display: block;
-      width: 100%;
+      .el-icon-upload {
+        font-size: 34px;
+        color: #b4bccc;
+      }
+      img {
+        display: block;
+        width: 100%;
+      }
     }
   }
 </style>
 
 
 <template>
-  <div class="insert__card-link">
+  <div class="insert__card-link" v-loading="remote_catch_loading">
     <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="80px">
       <el-form-item label="卡片类型" prop="type">
         <el-radio-group v-model="ruleForm.type">
           <el-radio :label="0">单品</el-radio>
-          <el-radio :label="1">其他链接</el-radio>
+          <el-radio :label="1">秒杀</el-radio>
         </el-radio-group>
       </el-form-item>
 
@@ -55,7 +54,7 @@
         </el-col>
         <el-col :span="6">
           <div class="mgl10">
-            <el-button class="catch-button" @click="resetForm('ruleForm')">抓取</el-button>
+            <el-button class="catch-button" @click="remoteCatchUrl">抓取</el-button>
           </div>
         </el-col>
       </el-form-item>
@@ -78,11 +77,27 @@
           <el-option label="$美元" value="MY"></el-option>
         </el-select>
       </el-form-item>
-
+      <template v-if="ruleForm.ismiaosha==1">
+        <el-form-item label="秒杀时间" prop="currencyname">
+          <el-date-picker
+            v-model="setismiaoshatime"
+            type="datetimerange"
+            range-separator="至"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+          />
+        </el-form-item>
+      </template>
       <el-form-item label="产品图片" prop="type">
         <el-upload
+          :data="{
+						uid: 11,
+						code: 'c20ad4d76fe97759aa27a0c99bff6710',
+						action: 'uploadimage'
+					}"
+          name="upfile"
           class="avatar-uploader"
-          action="https://jsonplaceholder.typicode.com/posts/"
+          :action="uploadUrl"
           :show-file-list="false"
           :on-success="handleAvatarSuccess"
           :before-upload="beforeAvatarUpload"
@@ -107,14 +122,21 @@
 	export default {
 		data() {
 			return {
+				setismiaoshatime: [],
+				remote_catch_loading: false,
+				uploadUrl: UEDITOR_CONFIG.serverUrl + '&action=uploadimage',
 				ruleForm: {
 					type: 0,
 					url: '',
+					cps: '',
 					title: '',
 					mall: '',
 					price: '',
 					currencyname: 'RMB',
-					cover: ''
+					cover: '',
+					ismiaosha: 0,
+					starttime: '',
+					endtime: ''
 				},
 				rules: {
 					type: [
@@ -187,6 +209,46 @@
 				}
 			};
 		},
+
+		watch: {
+			setismiaoshatime(time) {
+				var getTimg = function (t) {
+					return t.getFullYear() + '-' + (t.getMonth() + 1) + '-' + t.getDate() + ' ' + t.getHours() + ':' + t.getMinutes() + ':' + t.getSeconds()
+				}
+				if (time.length > 0) {
+					this.ruleForm.starttime = getTimg(new Date(time[0]))
+				}
+				if (time.length > 1) {
+					this.ruleForm.endtime = getTimg(new Date(time[1]))
+				}
+			},
+			['ruleForm.type'](type) {
+				if (type == 1) {
+					this.ruleForm.ismiaosha = 1
+				} else {
+					this.ruleForm.ismiaosha = 0
+				}
+			},
+			['ruleForm.url'](url) {
+				$.get('/admin/index/setcps', {
+					url
+				}, (replayData) => {
+					if (replayData == url || !replayData) {
+						this.$notify.warning({
+							title: '提示',
+							message: '没有CPS链接'
+						});
+					} else if (url) {
+						this.ruleForm.cps = url
+					}
+				}).fail(() => {
+					this.$notify.error({
+						title: '错误',
+						message: 'CPS检测出错'
+					});
+				})
+			}
+		},
 		created() {
 			if (this.addEventListenerMessage) return
 			window.addEventListener("message", this.message, false);
@@ -197,31 +259,55 @@
 		},
 		methods: {
 			message(e) {
-				if (typeof e.data != 'string') return;
+				var data = e.data
+				if (typeof data != 'string') return;
 
-				e.data = e.data.replace(/^\s+|\s+$/g, '')
-				if (e.data.substr(0, 1) != '{' || e.data.substr(-1, 1) != '}') {
+				data = data.replace(/^\s+|\s+$/g, '')
+				if (data.substr(0, 1) != '{' || data.substr(-1, 1) != '}') {
 					return
 				}
-				var sendData = JSON.parse(e.data);
-				this.ruleForm = sendData
+				var sendData = JSON.parse(data);
+
+				this.ruleForm.type = !isNaN(parseInt(sendData.type)) ? parseInt(sendData.type) : 0
+				this.ruleForm.url = sendData.url || ''
+				this.ruleForm.cps = sendData.cps || ''
+				this.ruleForm.title = sendData.title || ''
+				this.ruleForm.mall = sendData.mall || ''
+				this.ruleForm.price = sendData.price || ''
+				this.ruleForm.currencyname = sendData.currencyname || 'RMB'
+				this.ruleForm.cover = sendData.cover || ''
+				this.ruleForm.ismiaosha = !isNaN(parseInt(sendData.ismiaosha)) ? parseInt(sendData.ismiaosha) : 0
+				this.ruleForm.starttime = sendData.starttime || ''
+				this.ruleForm.endtime = sendData.endtime || ''
+        if( this.ruleForm.ismiaosha ){
+					if( this.ruleForm.starttime ){
+						this.setismiaoshatime[0] = new Date(this.ruleForm.starttime)
+
+						this.ruleForm.endtime &&
+						this.setismiaoshatime.push( new Date(this.ruleForm.endtime) )
+            
+          }
+
+					this.ruleForm.type = 1
+        }
+
 				busEvent.$emit('change:tabbar', 'fourth')
 			},
 			submitForm(formName) {
 				this.$refs[formName].validate((valid) => {
-					var link_data = String(base64.encode($.param(this.ruleForm))).replace('=', '');
-					console.log(base64.decode(link_data))
-
 					if (valid) {
-						var link_data = String(base64.encode($.param(this.ruleForm))).replace('=', '');
+						var linkForm = {link: this.ruleForm}
+						var link_data = String(base64.encode($.param(linkForm))).replace('=', '');
 						var pId = 'id-' + Math.random().toString().replace('.', '')
 
 						var unique = 'unique_id_' + pId
-						var card_width = 132;
-
+						var card_width = 132
+						if (this.ruleForm.ismiaosha) {
+							card_width = 356
+						}
 						var html = '' +
 							'<iframe ' +
-							'style="display:block;width:440px;height:' + card_width + 'px;max-width:100%;overflow:hidden;border:0;margin:0;padding:0;" ' +
+							'style="display:block;width:440px;height:' + card_width + 'px;max-width:100%;overflow:hidden;border:0;margin:auto;padding:0;" ' +
 							'data-link="' + link_data + '" ' +
 							'data-unique="' + unique + '" ' +
 							'src="http://m.jiguo.com/mb/iframe/index?iframe_data=' + link_data + '&unique_id=' + unique + '" ' +
@@ -251,7 +337,8 @@
 				this.$refs[formName].resetFields();
 			},
 			handleAvatarSuccess(res, file) {
-				this.imageUrl = URL.createObjectURL(file.raw);
+				var src_arr = res.url.match(/https?:\/\/s1\.jiguo\.com\/([\w\-]+)\/?/i);
+				this.ruleForm.cover = src_arr ? src_arr[1] : ''
 			},
 			beforeAvatarUpload(file) {
 				const isLt8M = file.size / 1024 / 1024 < 8;
@@ -262,6 +349,50 @@
 					})
 				}
 				return isLt8M
+			},
+			remoteCatchUrl() {
+				if (!/^https?:\/\/.+/.test(this.ruleForm.url)) {
+					this.$notify.warning({
+						title: '提示',
+						message: '请正确填写URL地址'
+					});
+					return
+				}
+				this.remote_catch_loading = true
+				$.get('/admin/casperjs/index', {
+					url: this.ruleForm.url
+				}, (replayData) => {
+					if (replayData.status != 0) {
+						this.$notify.error({
+							title: '错误',
+							message: replayData.message || '抓取错误'
+						});
+					} else {
+						this.ruleForm.url = replayData.data.url
+						this.ruleForm.title = replayData.data.title
+						this.ruleForm.mall = replayData.data.mall
+						this.ruleForm.price = replayData.data.price
+
+						this.$notify.success({
+							title: '提示',
+							message: '抓取成功'
+						});
+
+						replayData.data.cover &&
+						$.get('/admin/ajax/UploadImg', {
+							pic: replayData.data.cover
+						}, (result) => {
+							this.ruleForm.cover = result.data
+						}, 'json')
+					}
+				}, 'json').fail(() => {
+					this.$notify.error({
+						title: '错误',
+						message: '抓取出错'
+					});
+				}).always(() => {
+					this.remote_catch_loading = false
+				})
 			}
 		}
 	}

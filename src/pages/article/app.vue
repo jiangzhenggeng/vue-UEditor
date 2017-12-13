@@ -22,7 +22,7 @@
 
 <template>
   <div class="page">
-    <loading v-show="show"/>
+    <!--<loading v-show="show"/>-->
     <div class="content-wrap">
       <router-view></router-view>
     </div>
