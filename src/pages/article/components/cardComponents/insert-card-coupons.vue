@@ -90,7 +90,7 @@
     </div>
     <div class="load-async-data-box" ref="load-async-data-box">
       <load-async-data
-        url="/admin/search/index"
+        url="/admin/coupon/InterfaceGetCouponPackageList"
         :extData="extData"
         :resultCallback="resultCallback"
         ref="load-data-limit"
@@ -106,7 +106,7 @@
                   <div class="title line2" v-html="item.name"></div>
                   <div class="desc line1" v-html="item.detail"></div>
                   <div class="query">
-                    <a class="look blue" :href="`/admin/product/edit.html?id=${item.id}`" target="_blank">查看</a>
+                    <a class="look blue" :href="`/admin/coupon/CouponPackageedit/id/${item.id}.html`" target="_blank">查看</a>
                     <a href="javascript:;" @click="insertCard($event,item)" class="insert blue mgl10">插入</a>
                   </div>
                 </div>
@@ -126,17 +126,15 @@
 	export default {
 		data() {
 			return {
-				keyword: 'iphone',
+				keyword: '',
 				hidden: false
 			}
 		},
 		computed: {
 			extData() {
 				return {
-					name: this.keyword,
 					keyword: this.keyword,
-					type: 'product',
-					size: 100
+					size: 10
 				}
 			}
 		},
@@ -164,10 +162,7 @@
 		},
 		methods: {
 			resultCallback(replayData) {
-				return {
-					resultCode: 0,
-					result: replayData
-				}
+				return replayData
 			},
 			search(keyWord) {
 				this.keyword = keyWord

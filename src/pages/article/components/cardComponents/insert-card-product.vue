@@ -128,7 +128,7 @@
 	export default {
 		data() {
 			return {
-				keyword: 'iphone',
+				keyword: '',
 				hidden: false
 			}
 		},
@@ -138,7 +138,7 @@
 					name: this.keyword,
 					keyword: this.keyword,
 					type: 'product',
-					size: 100
+					size: 10
 				}
 			}
 		},
@@ -166,10 +166,7 @@
 		},
 		methods: {
 			resultCallback(replayData) {
-				return {
-					resultCode: 0,
-					result: replayData
-				}
+				return replayData
 			},
 			search(keyWord) {
 				this.keyword = keyWord
@@ -184,18 +181,36 @@
 				}
 			},
 			insertCard(item) {
-				var html = '' +
-					'<p style="text-align: center"><iframe ' +
-					'name="iframe' + item.id + '" ' +
-					'data-cid="' + item.id + '" ' +
-					'data-default-link-id="' + item.linkid + '" ' +
-					'class="iframe' + item.id + '" ' +
-					'src="http://zdm.jiguo.com/index/getcard?linkid=' + item.id + '&pid=' + item.id + '&cid=' + item.id + '" ' +
-					'data-productid="' + item.id + '"' +
-					'></iframe></p>';
+				$.get('/admin/ajax/InsertProductCard', {
+					id: item.id
+				}, (replayData) => {
+					if (replayData.resultCode != 0) {
+						this.$notify.error({
+							title: '错误',
+							message: replayData.errorMsg || '获取数据失败'
+						})
+						return
+					}
 
-				this.$emit('insert:html', html)
-				this.$emit('close')
+					var html = '' +
+						'<p style="text-align: center"><iframe ' +
+						'name="iframe' + replayData.result.cid + '" ' +
+						'data-cid="' + replayData.result.cid + '" ' +
+						'data-default-link-id="' + replayData.result.linkid + '" ' +
+						'class="iframe' + replayData.result.pid + '" ' +
+						'src="http://zdm.jiguo.com/index/getcard?linkid=' + replayData.result.linkid + '&pid=' + replayData.result.pid + '&cid=' + replayData.result.cid + '" ' +
+						'data-productid="' + replayData.result.pid + '"' +
+						'></iframe></p>';
+
+					this.$emit('insert:html', html)
+					this.$emit('close')
+
+				}, 'json').fail(() => {
+					this.$notify.error({
+						title: '错误',
+						message: '获取数据失败'
+					})
+				})
 			}
 		}
 	}

@@ -49,7 +49,7 @@
   }
 
   .no-data {
-    background-color: #f2f2f2;
+    /*background-color: #f2f2f2;*/
   }
 
   .loading-more-flage {

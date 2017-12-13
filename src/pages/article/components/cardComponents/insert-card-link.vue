@@ -303,7 +303,7 @@
 						var unique = 'unique_id_' + pId
 						var card_width = 132
 						if (this.ruleForm.ismiaosha) {
-							card_width = 356
+							card_width = 360
 						}
 						var html = '' +
 							'<iframe ' +

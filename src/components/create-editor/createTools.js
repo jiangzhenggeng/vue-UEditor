@@ -43,10 +43,13 @@ export function editorAddEventListener(vm, editor) {
 		});
 	});
 
-	//获取产品卡片数量，并在页面上显示相应信息
-	editor.addListener("contentChange", function () {
+	var ContentChangeDebounce = tools.debounce(()=>{
+		editor.sync()
+	},800)
 
-	});
+	editor.addListener("contentChange", function (){
+		ContentChangeDebounce()
+	})
 
 }
 
@@ -61,7 +64,7 @@ export function editorReady(vm, editor) {
 	editorRefresh(vm, editor)
 	editorBindScrollFun(vm, editor)
 
-	var resizeFn = tools.debounce(()=>{
+	var resizeFn = tools.debounce(() => {
 		editorRefresh(vm, editor)
 	})
 	$(window).resize(function () {

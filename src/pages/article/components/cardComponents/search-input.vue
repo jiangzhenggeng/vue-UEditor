@@ -38,15 +38,13 @@
 		components: {
 		},
 		created() {
-			this.emitSearch = tools.throttle((newVal) => {
+			this.emitSearch = tools.debounce((newVal) => {
 				this.$emit('search', newVal)
-			}, 120)
+			}, 300)
 		},
 		watch: {
 			keyWord(newVal) {
-				if (newVal) {
-					this.emitSearch(newVal)
-				}
+				this.emitSearch(newVal)
 			}
 		}
 	}
