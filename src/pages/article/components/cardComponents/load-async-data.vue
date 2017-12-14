@@ -239,7 +239,7 @@
 
 				var loadMoreObj = jQuery(this.$refs['loading-more-flage'] || null)
 
-				var gh = window.$WIN_HEIGHT + loadMoreObj.height() + this.fixload
+				var gh = jQuery(this.scrollDom).height() + loadMoreObj.height() + this.fixload
 				if (
 					this.scrollTrigger &&
 					loadMoreObj.length &&

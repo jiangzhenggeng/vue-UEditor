@@ -28,31 +28,33 @@
 <template>
   <transition name="window__modal">
     <dialog-base
-      v-show="inner_visibile"
+      v-if="inner_visibile"
       @close="close"
       title="插入卡片"
       class="insert-card"
     >
-      <el-tabs v-model="activeName">
-        <el-tab-pane label="产品库" name="second">
-          <insert-card-product
-            @insert:html="insertCard"
-            @close="close"
-          />
-        </el-tab-pane>
-        <el-tab-pane label="优惠券" name="third">
-          <insert-card-coupons
-            @insert:html="insertCard"
-            @close="close"
-          />
-        </el-tab-pane>
-        <el-tab-pane label="临时卡片" name="fourth">
-          <insert-card-link
-            @insert:html="insertCard"
-            @close="close"
-          />
-        </el-tab-pane>
-      </el-tabs>
+      <keep-alive>
+        <el-tabs v-model="activeName">
+          <el-tab-pane label="产品库" name="second">
+            <insert-card-product
+              @insert:html="insertCard"
+              @close="close"
+            />
+          </el-tab-pane>
+          <el-tab-pane label="优惠券" name="third">
+            <insert-card-coupons
+              @insert:html="insertCard"
+              @close="close"
+            />
+          </el-tab-pane>
+          <el-tab-pane label="临时卡片" name="fourth">
+            <insert-card-link
+              @insert:html="insertCard"
+              @close="close"
+            />
+          </el-tab-pane>
+        </el-tabs>
+      </keep-alive>
     </dialog-base>
   </transition>
 </template>
