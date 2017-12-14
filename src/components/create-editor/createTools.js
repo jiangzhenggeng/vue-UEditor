@@ -76,10 +76,13 @@ export function editorRefresh(vm, editor) {
 	if (editor.fullScreen) {
 		$('html').addClass('editor-full-screen')
 		editor.setHeight($(window).height() - 60)
+		$(window).data('scrollTop', $(window).scrollTop())
 	} else {
 		$('html').removeClass('editor-full-screen')
 		if (!editorRefresh.first) {
-			$(window).scrollTop(vm['EditorWrap'].offsetTop - $(window).height() / 2)
+			var centerScrollTop = vm['EditorWrap'].offsetTop - $(window).height() / 2
+			var prevScrollTop = $(window).data('scrollTop')
+			$(window).scrollTop(prevScrollTop < centerScrollTop ? centerScrollTop : prevScrollTop)
 		}
 		editor.setAutoHeight()
 	}
