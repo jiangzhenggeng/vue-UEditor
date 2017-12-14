@@ -43,11 +43,11 @@ export function editorAddEventListener(vm, editor) {
 		});
 	});
 
-	var ContentChangeDebounce = tools.debounce(()=>{
+	var ContentChangeDebounce = tools.debounce(() => {
 		editor.sync()
-	},800)
+	}, 800)
 
-	editor.addListener("contentChange", function (){
+	editor.addListener("contentChange", function () {
 		ContentChangeDebounce()
 	})
 
@@ -78,11 +78,16 @@ export function editorRefresh(vm, editor) {
 		editor.setHeight($(window).height() - 60)
 	} else {
 		$('html').removeClass('editor-full-screen')
-		$(window).scrollTop(vm['EditorWrap'].offsetTop)
+		if (!editorRefresh.first) {
+			$(window).scrollTop(vm['EditorWrap'].offsetTop - $(window).height() / 2)
+		}
 		editor.setAutoHeight()
 	}
+	delete editorRefresh.first
 	editorBindScrollFun(vm, editor)
 }
+
+editorRefresh.first = true
 
 //浏览器滚动固定导航栏逻辑
 export function editorBindScrollFun(vm, editor) {
