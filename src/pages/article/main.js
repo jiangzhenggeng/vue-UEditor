@@ -1,4 +1,4 @@
-import Vue from 'vue'
+import Vue from 'vue/dist/vue.runtime.esm'
 import ElementUI from 'element-ui'
 import Uploader from '../../components/jui-simple-uploader'
 import App from './app.vue'

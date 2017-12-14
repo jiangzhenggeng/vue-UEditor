@@ -35,17 +35,21 @@
 				keyWord: ''
 			}
 		},
-		components: {
-		},
+		components: {},
 		created() {
 			this.emitSearch = tools.debounce((newVal) => {
 				this.$emit('search', newVal)
 			}, 300)
 		},
 		watch: {
-			keyWord(newVal) {
-				this.emitSearch(newVal)
-			}
+			keyWord: [
+				function (newVal) {
+					this.emitSearch(newVal)
+				},
+				function (newVal) {
+				
+				},
+			]
 		}
 	}
 </script>
