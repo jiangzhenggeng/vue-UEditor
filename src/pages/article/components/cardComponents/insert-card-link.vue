@@ -276,20 +276,13 @@
 				this.ruleForm.price = sendData.price || ''
 				this.ruleForm.currencyname = sendData.currencyname || 'RMB'
 				this.ruleForm.cover = sendData.cover || ''
-				this.ruleForm.ismiaosha = !isNaN(parseInt(sendData.ismiaosha)) ? parseInt(sendData.ismiaosha) : 0
 				this.ruleForm.starttime = sendData.starttime || ''
 				this.ruleForm.endtime = sendData.endtime || ''
-
 				this.setismiaoshatime = []
-        if( this.ruleForm.ismiaosha ){
-					if( this.ruleForm.starttime ){
-						this.setismiaoshatime[0] = new Date(this.ruleForm.starttime)
-
-						this.ruleForm.endtime &&
-						this.setismiaoshatime.push( new Date(this.ruleForm.endtime) )
-
-          }
-					this.ruleForm.type = 1
+        if( this.ruleForm.starttime ){
+          this.setismiaoshatime[0] = new Date(this.ruleForm.starttime)
+          this.ruleForm.endtime &&
+          this.setismiaoshatime.push( new Date(this.ruleForm.endtime) )
         }
 
 				busEvent.$emit('change:tabbar', 'fourth')

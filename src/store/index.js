@@ -5,7 +5,10 @@ import * as actions from './actions'
 import mutations from './mutations'
 import editor from './editor/index'
 
-Vue.use(Vuex)
+if (process.env['vuex']!=='Vuex') {
+	Vue.use(Vuex);
+}
+
 
 const initState = {
   //页面加载提示

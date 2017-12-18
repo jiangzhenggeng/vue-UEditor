@@ -1,12 +1,8 @@
 <script src="<?php echo CDN;?>js/laydate/laydate.js"></script>
 <script src="<?php echo CDN;?>js/select.js"></script>
 <script src="<?php echo CDN;?>js/index.js"></script>
-<script src="/protected/extensions/editor/ueditor.config.js"></script>
-<script src="/protected/extensions/editor/ueditor.all.min.js"> </script>
-<script src="/protected/extensions/editor/lang/zh-cn/zh-cn.js"></script>
-<script src="/protected/extensions/editor/addCustomizeDialog.js"></script>
-<script src="/protected/extensions/editor/catchBtn.js"></script>
 <script src="<?php echo CDN;?>js/product_comment.js"></script>
+
 
 <script>
 	/*********************
@@ -127,3 +123,8 @@
 		});
 	});
 </script>
+
+<script src="http://cdn.jiguo.com/static@2.0/permanent/vuejs/vue-2.5.3/dist/vue.min.js"></script>
+<script src="http://cdn.jiguo.com/static@2.0/permanent/vuex/vuex-3.0.0/dist/vuex.min.js"></script>
+<script src="http://cdn.jiguo.com/static@2.0/permanent/vue-router/vue-router-3.0.1/dist/vue-router.min.js"></script>
+
