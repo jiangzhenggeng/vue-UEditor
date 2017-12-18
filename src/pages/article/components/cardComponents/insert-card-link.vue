@@ -136,7 +136,8 @@
 					cover: '',
 					ismiaosha: 0,
 					starttime: '',
-					endtime: ''
+					endtime: '',
+					unique_id: ''
 				},
 				rules: {
 					type: [
@@ -279,26 +280,31 @@
 				this.ruleForm.starttime = sendData.starttime || ''
 				this.ruleForm.endtime = sendData.endtime || ''
 				this.setismiaoshatime = []
-        if( this.ruleForm.starttime ){
-          this.setismiaoshatime[0] = new Date(this.ruleForm.starttime)
-          this.ruleForm.endtime &&
-          this.setismiaoshatime.push( new Date(this.ruleForm.endtime) )
-        }
+				if (this.ruleForm.starttime) {
+					this.setismiaoshatime[0] = new Date(this.ruleForm.starttime)
+					this.ruleForm.endtime &&
+					this.setismiaoshatime.push(new Date(this.ruleForm.endtime))
+				}
+				this.ruleForm.unique_id = sendData.unique_id || ''
 
 				busEvent.$emit('change:tabbar', 'fourth')
 			},
 			submitForm(formName) {
 				this.$refs[formName].validate((valid) => {
 					if (valid) {
-						var linkForm = {link: this.ruleForm}
-						var link_data = String(base64.encode($.param(linkForm))).replace('=', '');
-						var pId = 'id-' + Math.random().toString().replace('.', '')
-
-						var unique = 'unique_id_' + pId
+						var prevUnique_id = this.ruleForm.unique_id
 						var card_width = 132
 						if (this.ruleForm.ismiaosha) {
 							card_width = 360
 						}
+
+						var unique = 'unique_id_' + 'id-' + Math.random().toString().replace('.', '')
+						this.ruleForm.unique_id = unique
+						var linkForm = {
+							link: this.ruleForm,
+						}
+						var link_data = String(base64.encode($.param(linkForm))).replace('=', '');
+
 						var html = '' +
 							'<iframe ' +
 							'style="display:block;width:440px;height:' + card_width + 'px;max-width:100%;overflow:hidden;border:0;margin:auto;padding:0;" ' +
@@ -308,7 +314,7 @@
 							'></iframe>';
 
 						this.$emit('insert:html', html, function (editor) {
-							var iob = $(editor.document).find('[data-unique=' + unique + ']');
+							var iob = prevUnique_id ? $(editor.document).find('[data-unique=' + prevUnique_id + ']') : $();
 							if (iob.length > 0) {
 								if (!iob.closest('p').length) {
 									html = '<p style="text-align: center">' + html + '</p>'
