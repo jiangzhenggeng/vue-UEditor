@@ -29,8 +29,8 @@
 			h =  getHeight(Dom) || 20,
 			btnIframe = document.createElement('iframe'),
 			btnStyle = 'display:block;width:' + w + 'px;height:' + h + 'px;overflow:hidden;border:0;margin:0;padding:0;position:absolute;top:0;left:0;filter:alpha(opacity=0);-moz-opacity:0;-khtml-opacity: 0;opacity: 0;cursor:pointer;';
-		console.log(h);
-		console.log(document.getElementById('file'));
+		// console.log(h);
+		// console.log(document.getElementById('file'));
 		$(btnIframe).on('load', function(){
 
 			var timestrap = (+new Date()).toString(36),
