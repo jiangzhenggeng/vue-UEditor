@@ -46,8 +46,7 @@ module.exports = [
 		externals: {
 			'vue': 'Vue',
 			'vuex': 'Vuex',
-			'vue-router': 'VueRouter',
-			'jquery': '$'
+			'vue-router': 'VueRouter'
 		},
 		subModel: {
 			'UEditor': './static/UEditor/index.js'

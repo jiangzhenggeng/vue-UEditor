@@ -118,6 +118,13 @@
         border-color: transparent;
         border-right-color: #fc584e;
         border-bottom-color: #fc584e;
+        cursor: pointer;
+        user-select: none;
+        &.no-selected{
+          border-right-color: #ccc;
+          border-bottom-color: #ccc;
+          display: none;
+        }
         img {
           position: absolute;
           right: -19px;
@@ -146,7 +153,6 @@
       .uploader-list-inner:hover .hover-show {
         display: flex;
       }
-
       /*状态*/
       .uploading-status {
         position: absolute;
@@ -238,6 +244,13 @@
                   v-if="filtersSelectedItem('success-img-' + props.file.id)"
                   class="item-selected"
                   @click="selectedItem(`success-img-${props.file.id}`,props.file)"
+                >
+                  <img src="./icon/item_selected.svg"/>
+                </div>
+                <div
+                  @click="selectedItem(`success-img-${props.file.id}`,props.file)"
+                  class="item-selected no-selected hover-show"
+                  v-else
                 >
                   <img src="./icon/item_selected.svg"/>
                 </div>

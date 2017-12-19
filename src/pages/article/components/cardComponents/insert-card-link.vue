@@ -80,12 +80,16 @@
       <template v-if="ruleForm.ismiaosha==1">
         <el-form-item label="秒杀时间" prop="currencyname">
           <el-date-picker
-            v-model="setismiaoshatime"
-            type="datetimerange"
-            range-separator="至"
-            start-placeholder="开始日期"
-            end-placeholder="结束日期"
-          />
+            v-model="starttime"
+            type="datetime"
+            placeholder="开始日期">
+          </el-date-picker>
+          <el-date-picker
+            class="mgl10"
+            v-model="endtime"
+            type="datetime"
+            placeholder="结束日期">
+          </el-date-picker>
         </el-form-item>
       </template>
       <el-form-item label="产品图片" prop="type">
@@ -119,10 +123,15 @@
 	import $ from 'jquery'
 	import busEvent from './busEvent'
 
+  function getTimg(t) {
+		return t.getFullYear() + '-' + (t.getMonth() + 1) + '-' + t.getDate() + ' ' + t.getHours() + ':' + t.getMinutes() + ':' + t.getSeconds()
+	}
+
 	export default {
 		data() {
 			return {
-				setismiaoshatime: [],
+				starttime: '',
+				endtime: '',
 				remote_catch_loading: false,
 				uploadUrl: UEDITOR_CONFIG.serverUrl + '&action=uploadimage',
 				ruleForm: {
@@ -212,15 +221,18 @@
 		},
 
 		watch: {
-			setismiaoshatime(time) {
-				var getTimg = function (t) {
-					return t.getFullYear() + '-' + (t.getMonth() + 1) + '-' + t.getDate() + ' ' + t.getHours() + ':' + t.getMinutes() + ':' + t.getSeconds()
+			starttime(time) {
+				if(time){
+					this.ruleForm.starttime = getTimg(new Date(time))
+        }else{
+					this.ruleForm.starttime = ''
 				}
-				if (time.length > 0) {
-					this.ruleForm.starttime = getTimg(new Date(time[0]))
-				}
-				if (time.length > 1) {
-					this.ruleForm.endtime = getTimg(new Date(time[1]))
+			},
+			endtime(time) {
+				if(time) {
+					this.ruleForm.endtime = getTimg(new Date(time))
+				}else{
+					this.ruleForm.endtime = ''
 				}
 			},
 			['ruleForm.type'](type) {
@@ -279,11 +291,13 @@
 				this.ruleForm.cover = sendData.cover || ''
 				this.ruleForm.starttime = sendData.starttime || ''
 				this.ruleForm.endtime = sendData.endtime || ''
-				this.setismiaoshatime = []
-				if (this.ruleForm.starttime) {
-					this.setismiaoshatime[0] = new Date(this.ruleForm.starttime)
-					this.ruleForm.endtime &&
-					this.setismiaoshatime.push(new Date(this.ruleForm.endtime))
+				if (this.ruleForm.type==1) {
+					if(this.ruleForm.starttime) {
+						this.starttime = new Date(this.ruleForm.starttime)
+					}
+          if(this.ruleForm.endtime){
+						this.endtime = new Date(this.ruleForm.endtime)
+          }
 				}
 				this.ruleForm.unique_id = sendData.unique_id || ''
 
