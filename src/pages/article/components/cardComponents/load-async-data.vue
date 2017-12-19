@@ -239,11 +239,11 @@
 
 				var loadMoreObj = jQuery(this.$refs['loading-more-flage'] || null)
 
-				var gh = jQuery(this.scrollDom).height() + loadMoreObj.height() + this.fixload
+				var gh = jQuery(window).height() + loadMoreObj.height() + this.fixload
 				if (
 					this.scrollTrigger &&
 					loadMoreObj.length &&
-					gh + jQuery(this.scrollDom).scrollTop() < loadMoreObj.offset().top
+					gh + jQuery(window).scrollTop() < loadMoreObj.offset().top
 				) {
 					return
 				}
@@ -288,7 +288,7 @@
 							tools.sessionStorage.set(this._cacheKey_, this._cacheData_)
 						}
 						if (!this.nomore && !this.nodata) {
-							if (this.scrollTrigger && gh + jQuery(this.scrollDom).scrollTop() < loadMoreObj.offset().top) {
+							if (this.scrollTrigger && gh + jQuery(window).scrollTop() < loadMoreObj.offset().top) {
 								this.getItemData()
 							}
 						}
