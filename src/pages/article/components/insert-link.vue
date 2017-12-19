@@ -77,7 +77,7 @@
     data() {
       return {
         description: '',
-        link: '',
+        link: 'http://',
         urlSuccess: false
       }
     },
