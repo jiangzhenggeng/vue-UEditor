@@ -31,17 +31,17 @@
 </template>
 
 <script>
-  import {mapState} from 'vuex'
-  import mainMixins from '../mainMixins'
+	import {mapState} from 'vuex'
+	import mainMixins from '../mainMixins'
 
-  export default {
-    mixins: [mainMixins],
-    computed: {
-      ...mapState([
-        'show'
-      ])
-    }
-  }
+	export default {
+		mixins: [mainMixins],
+		computed: {
+			...mapState([
+				'show'
+			])
+		}
+	}
 </script>
 
 
