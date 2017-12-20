@@ -1,4 +1,4 @@
-import DialogBase from '../base/dialog-base.vue'
+import DialogBase from './dialog-base.vue'
 
 export default {
   props: {
