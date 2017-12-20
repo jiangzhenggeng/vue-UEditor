@@ -70,18 +70,28 @@ export function editorReady(vm, editor) {
 	$(window).resize(function () {
 		resizeFn()
 	})
+	vm['ToolBarBox'].append('<div class="pullout__fullscreen-tips">ESC可退出全屏编辑模式</div>')
+	vm['ToolBarFullScreenSattus'] = vm['ToolBarBox'].find('.pullout__fullscreen-tips')
 }
 
 export function editorRefresh(vm, editor) {
 	if (editor.fullScreen) {
 		$('html').addClass('editor-full-screen')
 		editor.setHeight($(window).height() - 60)
+		vm['ToolBarFullScreenSattus'] && setTimeout(()=>{
+			vm['ToolBarFullScreenSattus'].addClass('show')
+			setTimeout(()=>{
+				vm['ToolBarFullScreenSattus'].removeClass('show')
+			},3000)
+		},1500)
 	} else {
 		$('html').removeClass('editor-full-screen')
 		if (!editorRefresh.first) {
 			$(window).scrollTop(vm['EditorWrap'].offsetTop)
 		}
 		editor.setAutoHeight()
+		vm['ToolBarFullScreenSattus'] &&
+		vm['ToolBarFullScreenSattus'].removeClass('show')
 	}
 	delete editorRefresh.first
 	editorBindScrollFun(vm, editor)
@@ -172,4 +182,27 @@ export function editorBindToolBarTips(vm, editor) {
 	}).on('mouseleave.editor', '.edui-button-body,.edui-arrow', function () {
 		EditorToolsTips.stop(true, false).fadeOut(260)
 	});
+}
+
+//添加快捷键
+export function bindKeyMap(vm, editor) {
+	editor.addshortcutkey({
+		//有序列表
+		"insertorderedlist2": "ctrl+shift+55",
+		//无序列表
+		"insertunorderedlist2": "ctrl+shift+56"
+	})
+	if (!window.SYATEM.isWindows) {
+		editor.addshortcutkey({
+			//分隔线
+			"horizontal": "ctrl+shift+83"
+		})
+	}
+
+	//按esc键退出全屏
+	$(editor.document).add(window.document).keyup(function (e) {
+		if (e.keyCode == 27 && vm.fullScreen) {
+			editor.execCommand('full_screen')
+		}
+	})
 }

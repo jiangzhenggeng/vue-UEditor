@@ -35,7 +35,8 @@
     editorBindScrollFun,
     editorBindToolBarTips,
     editorRefresh,
-    editorAddEventListener
+    editorAddEventListener,
+		bindKeyMap
   } from './createTools'
   import $ from 'jquery'
 
@@ -87,6 +88,8 @@
           editorReady(vm, this)
           //绑定toolbar提示文字
           editorBindToolBarTips(vm, this)
+          //添加快捷键
+					bindKeyMap(vm, this)
         }
       })
       vm.editor.fullScreen = this.fullScreen
