@@ -51,6 +51,25 @@ module.exports = [
 		subModel: {
 			'UEditor': './static/UEditor/index.js'
 		}
+	},
+	{
+		name: 'uiDevel',
+		main: './src/pages/uiDevel/main.js',
+		options: {
+			filename: path.resolve(__dirname, '../dist/index.html'),
+			template: getTplPath('uiDevel'),
+			minify: {
+				removeComments: true,
+				collapseWhitespace: true,
+				removeAttributeQuotes: false
+			}
+		},
+		//不允许集体打包方案
+		notpackage: true,
+		externals: {
+			'vue': 'Vue',
+			'vue-router': 'VueRouter'
+		}
 	}
 ]
 

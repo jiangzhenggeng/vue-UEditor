@@ -72,18 +72,21 @@ export function editorReady(vm, editor) {
 	})
 	vm['ToolBarBox'].append('<div class="pullout__fullscreen-tips">ESC可退出全屏编辑模式</div>')
 	vm['ToolBarFullScreenSattus'] = vm['ToolBarBox'].find('.pullout__fullscreen-tips')
+
+	//添加获取内容过滤规则
+	addOutputRule(vm, editor)
 }
 
 export function editorRefresh(vm, editor) {
 	if (editor.fullScreen) {
 		$('html').addClass('editor-full-screen')
 		editor.setHeight($(window).height() - 60)
-		vm['ToolBarFullScreenSattus'] && setTimeout(()=>{
+		vm['ToolBarFullScreenSattus'] && setTimeout(() => {
 			vm['ToolBarFullScreenSattus'].addClass('show')
-			setTimeout(()=>{
+			setTimeout(() => {
 				vm['ToolBarFullScreenSattus'].removeClass('show')
-			},3000)
-		},1500)
+			}, 3000)
+		}, 1500)
 	} else {
 		$('html').removeClass('editor-full-screen')
 		if (!editorRefresh.first) {
@@ -206,3 +209,36 @@ export function bindKeyMap(vm, editor) {
 		}
 	})
 }
+
+export function addOutputRule(vm, editor) {
+
+	function rule(root) {
+		var tagNameArray = {}
+		root.children && root.children.forEach((item) => {
+			if (item.children && item.children.length) {
+				tagNameArray = {}
+				rule(item)
+			} else {
+				if (!tagNameArray[item.tagName]) {
+					tagNameArray[item.tagName] = 0
+				}
+				tagNameArray[item.tagName] += 1
+				if (tagNameArray['img'] > 1) {
+					item.attr.multiple = true
+				}
+			}
+		})
+	}
+
+	editor.addOutputRule(rule)
+}
+
+
+
+
+
+
+
+
+
+

@@ -50,6 +50,7 @@
           <insert-card-link
             @insert:html="insertCard"
             @close="close"
+            ref="insert-card-link"
           />
         </el-tab-pane>
       </el-tabs>
@@ -84,7 +85,10 @@
 		methods: {
 			insertCard(html, callBack) {
 				this.$emit('insert:html', html, callBack)
-			}
+			},
+      init(){
+				this.$refs['insert-card-link'].init()
+      }
 		}
 	}
 </script>

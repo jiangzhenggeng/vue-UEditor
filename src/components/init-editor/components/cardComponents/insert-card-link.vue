@@ -123,7 +123,7 @@
 	import $ from 'jquery'
 	import busEvent from './busEvent'
 
-  function getTimg(t) {
+	function getTimg(t) {
 		return t.getFullYear() + '-' + (t.getMonth() + 1) + '-' + t.getDate() + ' ' + t.getHours() + ':' + t.getMinutes() + ':' + t.getSeconds()
 	}
 
@@ -219,19 +219,18 @@
 				}
 			};
 		},
-
 		watch: {
 			starttime(time) {
-				if(time){
+				if (time) {
 					this.ruleForm.starttime = getTimg(new Date(time))
-        }else{
+				} else {
 					this.ruleForm.starttime = ''
 				}
 			},
 			endtime(time) {
-				if(time) {
+				if (time) {
 					this.ruleForm.endtime = getTimg(new Date(time))
-				}else{
+				} else {
 					this.ruleForm.endtime = ''
 				}
 			},
@@ -271,6 +270,25 @@
 			window.removeEventListener("message", this.message, false)
 		},
 		methods: {
+			init() {
+				this.ruleForm = {
+					type: 0,
+					url: '',
+					cps: '',
+					title: '',
+					mall: '',
+					price: '',
+					currencyname: 'RMB',
+					cover: '',
+					ismiaosha: 0,
+					starttime: '',
+					endtime: '',
+					unique_id: ''
+				}
+				this.starttime = ''
+				this.endtime = ''
+				this.remote_catch_loading = false
+			},
 			message(e) {
 				var data = e.data
 				if (typeof data != 'string') return;
@@ -291,13 +309,13 @@
 				this.ruleForm.cover = sendData.cover || ''
 				this.ruleForm.starttime = sendData.starttime || ''
 				this.ruleForm.endtime = sendData.endtime || ''
-				if (this.ruleForm.type==1) {
-					if(this.ruleForm.starttime) {
+				if (this.ruleForm.type == 1) {
+					if (this.ruleForm.starttime) {
 						this.starttime = new Date(this.ruleForm.starttime)
 					}
-          if(this.ruleForm.endtime){
+					if (this.ruleForm.endtime) {
 						this.endtime = new Date(this.ruleForm.endtime)
-          }
+					}
 				}
 				this.ruleForm.unique_id = sendData.unique_id || ''
 

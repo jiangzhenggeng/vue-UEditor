@@ -13,21 +13,26 @@
       @editor-ready="editorReady"
       @trigger:click:event="TriggerClickEvent"
       :content="content"
-      name="article[message]"
+      :name="name"
     />
     <inert-video
+      v-if="filtersToolbars('insert_video')"
       :visibile.sync="InsertVideoVisibile"
       @insert:html="InsertHtml"
     />
     <inert-image
+      v-if="filtersToolbars('insert_image')"
       :visibile.sync="InsertImageVisibile"
       @insert:html="InsertHtml"
     />
     <inert-card
+      v-if="filtersToolbars('insert_card')"
       :visibile.sync="InsertCardVisibile"
       @insert:html="InsertHtml"
+      ref="inert-card"
     />
     <inert-link
+      v-if="filtersToolbars('new_link')"
       :visibile.sync="InsertLinkVisibile"
       @insert:html="InsertHtml"
     />
@@ -45,13 +50,27 @@
 	import $ from 'jquery'
 
 	export default {
+		props: {
+			name: {
+				type: String,
+				required: true
+			},
+			content: {
+				type: String,
+				default: ''
+			},
+			publicKey: {
+				type: String,
+				default: 'id' + String(Math.random()).replace('.', '')
+			}
+		},
 		data() {
 			return {
 				InsertVideoVisibile: false,
 				InsertImageVisibile: false,
 				InsertCardVisibile: false,
 				InsertLinkVisibile: false,
-				content: window.ueditorContent || ''
+				toolbars: window.UEDITOR_CONFIG.toolbars
 			}
 		},
 		components: {
@@ -66,7 +85,7 @@
 				this.$nextTick(() => {
 					this.hidePageLoading()
 				})
-				this.editor = window.ueditorContentBox = editor
+				this.editor = window[this.publicKey] = editor
 
 				//获取产品卡片数量，并在页面上显示相应信息
 				this.editor.addListener("contentChange", function () {
@@ -118,6 +137,7 @@
 					}
 					case 'insert_card': {
 						this.InsertCardVisibile = true
+						this.$refs['inert-card'].init()
 						break
 					}
 					case 'new_link': {
@@ -134,6 +154,17 @@
 				} else {
 					this.editor.execCommand('inserthtml', html)
 				}
+			},
+			filtersToolbars(tool, toolbars) {
+				var result = false
+				;(toolbars || this.toolbars).forEach((item) => {
+					if (item instanceof Array) {
+						result = this.filtersToolbars(tool, item)
+					} else if (item == tool) {
+						result = true
+					}
+				})
+				return result
 			},
 			...mapActions(['hidePageLoading'])
 		}
