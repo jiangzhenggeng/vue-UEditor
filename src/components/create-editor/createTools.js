@@ -212,25 +212,45 @@ export function bindKeyMap(vm, editor) {
 
 export function addOutputRule(vm, editor) {
 
+	// function rule(root) {
+	// 	var tagNameArray = {}
+	// 	root.children && root.children.forEach((item) => {
+	// 		if (item.children && item.children.length) {
+	// 			tagNameArray = {}
+	// 			rule(item)
+	// 		} else {
+	// 			if (!tagNameArray[item.tagName]) {
+	// 				tagNameArray[item.tagName] = 0
+	// 			}
+	// 			tagNameArray[item.tagName] += 1
+	// 			if (tagNameArray['img'] > 1) {
+	// 				if(!item.attrs) item.attrs = {}
+	// 				item.attrs.multiple = true
+	// 			}
+	// 		}
+	// 	})
+	// }
+
+	//过滤a标签 <a>sds<span>ds</span>dv</a>
+	// ==> <a>sdsdsdv</a>
+
 	function rule(root) {
-		var tagNameArray = {}
-		root.children && root.children.forEach((item) => {
-			if (item.children && item.children.length) {
-				tagNameArray = {}
-				rule(item)
-			} else {
-				if (!tagNameArray[item.tagName]) {
-					tagNameArray[item.tagName] = 0
+		root.children && root.children.forEach((node) => {
+			if (String(node.tagName).toLocaleLowerCase() == 'a') {
+				node.setAttr('class','editor-link-a-href')
+				if (node.parentElement && node.parentElement.type == 'root') {
+					node.innerHTML('<p>' + node.innerText() || '' + '</p>')
+				} else {
+					node.innerHTML(node.innerText() || '')
 				}
-				tagNameArray[item.tagName] += 1
-				if (tagNameArray['img'] > 1) {
-					item.attr.multiple = true
-				}
+			} else if (node.children && node.children.length) {
+				rule(node)
 			}
 		})
 	}
 
 	editor.addOutputRule(rule)
+
 }
 
 

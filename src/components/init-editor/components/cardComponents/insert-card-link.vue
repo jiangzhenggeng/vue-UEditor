@@ -120,12 +120,45 @@
 </template>
 <script>
 	import base64 from '../../../../tools/base64'
+	import debounce from '../../../../tools/debounce'
 	import $ from 'jquery'
 	import busEvent from './busEvent'
 
 	function getTimg(t) {
 		return t.getFullYear() + '-' + (t.getMonth() + 1) + '-' + t.getDate() + ' ' + t.getHours() + ':' + t.getMinutes() + ':' + t.getSeconds()
 	}
+
+	const debounceFn = debounce(function (url) {
+		if(!url || !/^https?:\/\/.+/.test(url)){
+			this.ruleForm.cps =''
+			return
+    }
+		if (this['ruleForm.url.ajax']) {
+			this['ruleForm.url.ajax'].abort &&
+			this['ruleForm.url.ajax'].abort()
+		}
+		this['ruleForm.url.ajax'] = $.get('/admin/index/setcps', {
+			url
+		}, (replayData) => {
+			if (this['ruleForm.url.$notify']) {
+				this['ruleForm.url.$notify'].close()
+			}
+			if (replayData == url || !replayData) {
+				this['ruleForm.url.$notify'] = this.$notify.warning({
+					title: '提示',
+					message: '没有CPS链接'
+				});
+			} else if (url) {
+				this.ruleForm.cps = url
+			}
+		}).fail(() => {
+			this['ruleForm.url.$notify'] = this.$notify.error({
+				title: '错误',
+				message: 'CPS检测出错'
+			});
+			this.ruleForm.cps =''
+		})
+	}, 500)
 
 	export default {
 		data() {
@@ -242,23 +275,7 @@
 				}
 			},
 			['ruleForm.url'](url) {
-				$.get('/admin/index/setcps', {
-					url
-				}, (replayData) => {
-					if (replayData == url || !replayData) {
-						this.$notify.warning({
-							title: '提示',
-							message: '没有CPS链接'
-						});
-					} else if (url) {
-						this.ruleForm.cps = url
-					}
-				}).fail(() => {
-					this.$notify.error({
-						title: '错误',
-						message: 'CPS检测出错'
-					});
-				})
+				debounceFn.call(this, url)
 			}
 		},
 		created() {
@@ -352,6 +369,7 @@
 									html = '<p style="text-align: center">' + html + '</p>'
 								}
 								iob.after(html);
+								editor.fireEvent('contentchange')
 								iob.remove();
 								return false
 							}

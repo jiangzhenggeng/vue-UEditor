@@ -118,24 +118,33 @@
         }
 
         var fragment = this.range.extractContents()
-        var node = this.range.document.createElement("div")
-        var tempFrag = this.range.document.createDocumentFragment()
-        node.appendChild(fragment)
-        var a = node.getElementsByTagName('a')
-        for (var i = a.length - 1; i >= 0; i--) {
-          while (a[i].firstChild) {
-            tempFrag.appendChild(a[i].firstChild)
-          }
-          a[i].parentElement.replaceChild(tempFrag, a[i])
-        }
-
         var A = this.range.document.createElement('a')
         A.setAttribute('href', this.link)
         A.setAttribute('title', this.description)
-        while (node.firstChild) {
-          A.appendChild(node.firstChild)
+				A.setAttribute('class', 'editor-link-a-href')
+        A.innerHTML = fragment.textContent
+        if(this.range.startContainer.tagName=='BODY'){
+        	var p = this.range.document.createElement('p')
+					p.appendChild(A)
+					this.range.insertNode(p)
+					if(
+						p.previousElementSibling &&
+						p.previousElementSibling.tagName=='P' &&
+            p.previousElementSibling.textContent==''
+          ){
+						p.parentElement.removeChild(p.previousElementSibling)
+						if(
+							p.nextElementSibling &&
+							p.nextElementSibling.tagName=='P' &&
+							p.nextElementSibling.textContent==''
+						){
+							p.parentElement.removeChild(p.nextElementSibling)
+						}
+          }
+        }else{
+					this.range.insertNode(A)
         }
-        this.range.insertNode(A)
+				this.editor.fireEvent('contentchange')
         this.close()
       }
     }

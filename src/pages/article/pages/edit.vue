@@ -8,6 +8,7 @@
 
 <script>
 	import InitEditorIndex from '../../../components/init-editor/index'
+	// import content from './content.html'
 
 	export default {
 		data() {
