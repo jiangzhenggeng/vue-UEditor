@@ -90,7 +90,7 @@
     </div>
     <div class="load-async-data-box" ref="load-async-data-box">
       <load-async-data
-        url="/admin/search/index"
+        url="/admin/search/NewIndex"
         :extData="extData"
         :resultCallback="resultCallback"
         ref="load-data-limit"

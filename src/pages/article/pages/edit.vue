@@ -8,12 +8,12 @@
 
 <script>
 	import InitEditorIndex from '../../../components/init-editor/index'
-	// import content from './content.html'
+	import content from './content.html'
 
 	export default {
 		data() {
 			return {
-				content: window.ueditorContent
+				content: process.env.NODE_ENV !== 'production' ? content : window.ueditorContent
 			}
 		},
 		components: {
