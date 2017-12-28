@@ -403,8 +403,12 @@
 				mask.css('display', 'flex')
 				tempImg.onload = function () {
 					$(img).attr({
+						'catchremote': true,
 						'src': this.src,
 						'_src': this.src,
+						"title": $(img).attr('title'),
+						"alt": $(img).attr('alt'),
+						"data-original": $(img).attr('data-original'),
 						'data-width': this.width,
 						'data-height': this.height,
 						'data-img-type': type || 2,
@@ -420,6 +424,19 @@
 					return
 				}
 				var src = 'http://s1.jiguo.com/' + file.respon.field + '/logo';
+				$(currentImg).attr({
+					'catchremote': true,
+					'src': src,
+					'_src': src,
+					"title": file.respon.title,
+					"alt": file.respon.alt || file.respon.title,
+					"data-original": file.respon.original,
+					'data-width': file.respon.width,
+					'data-height': file.respon.height,
+					'data-img-type': file.respon.type,
+					'data-ratio': file.respon.ratio,
+				})
+
 				this.loadingImageMask(src, currentImg, file.respon.type)
 				currentImg.data('first-loading', true)
 			},
