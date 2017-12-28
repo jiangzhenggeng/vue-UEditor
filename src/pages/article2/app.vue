@@ -1,6 +1,6 @@
 <style lang="scss">
-  @import '../../components/jiguo-element-ui/element-ui';
 
+  @import '../../components/jiguo-element-ui/element-ui';
   $IMAGES_PATH: '../../style/images/';
   @import '../../style/scss/app.scss';
   /*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/
@@ -25,7 +25,7 @@
   <div class="page">
     <!--<loading v-show="show"/>-->
     <div class="content-wrap">
-      <article-edit/>
+      <edit-component/>
     </div>
   </div>
 </template>
@@ -33,17 +33,17 @@
 <script>
 	import {mapState} from 'vuex'
 	import mainMixins from '../mainMixins'
-	import ArticleEdit from './pages/edit'
+	import EditComponent from './pages/edit'
 
 	export default {
 		mixins: [mainMixins],
+		components: {
+			EditComponent
+		},
 		computed: {
 			...mapState([
 				'show'
 			])
-		},
-		components: {
-			ArticleEdit
 		}
 	}
 </script>

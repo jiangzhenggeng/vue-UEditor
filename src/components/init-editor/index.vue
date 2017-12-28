@@ -14,6 +14,7 @@
       @trigger:click:event="TriggerClickEvent"
       :content="content"
       :name="name"
+      :toolbars="toolbars"
     />
     <inert-video
       v-if="filtersToolbars('insert_video')"
@@ -62,6 +63,10 @@
 			publicKey: {
 				type: String,
 				default: 'id' + String(Math.random()).replace('.', '')
+			},
+			toolbars: {
+				type: Array,
+				default: window.UEDITOR_CONFIG.toolbars
 			}
 		},
 		data() {
@@ -69,8 +74,7 @@
 				InsertVideoVisibile: false,
 				InsertImageVisibile: false,
 				InsertCardVisibile: false,
-				InsertLinkVisibile: false,
-				toolbars: window.UEDITOR_CONFIG.toolbars
+				InsertLinkVisibile: false
 			}
 		},
 		components: {
