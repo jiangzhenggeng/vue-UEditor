@@ -69,11 +69,25 @@ module.exports = [
 		},
 		//不允许集体打包方案
 		notpackage: true,
-		externals: {
-			// 'vue': 'Vue',
-			// 'vuex': 'Vuex',
-			// 'vue-router': 'VueRouter'
+		subModel: {
+			'UEditor': './static/UEditor/index.js'
+		}
+	},
+	{
+		name: 'product',
+		main: './src/pages/product/main.js',
+		options: {
+			filename: path.resolve(__dirname, '../../zdm/protected/modules/admin/views/product/_editor.php'),
+			template: getTplPath('product'),
+			minify: {
+				removeComments: true,
+				collapseWhitespace: true,
+				removeAttributeQuotes: false
+			},
+			chunksSortMode,
 		},
+		//不允许集体打包方案
+		notpackage: true,
 		subModel: {
 			'UEditor': './static/UEditor/index.js'
 		}
