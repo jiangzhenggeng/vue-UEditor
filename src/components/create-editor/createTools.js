@@ -18,7 +18,7 @@ export function editorAddEventListener(vm, editor) {
 	});
 
 	var checkImageStyleId = createId()
-	editor.addListener("afterpaste", function () {
+	editor.addListener("afterSetContent afterpaste", function () {
 		//检查图片地址合法性
 		//如果不合法就加上红色的边框
 		if (!$(this.document).find('#' + checkImageStyleId).length) {

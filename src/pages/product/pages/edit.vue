@@ -34,7 +34,7 @@
 						'justifyright',
 						'|',
 						'insert_video',
-						'new_link',
+//						'new_link',
 						'simpleupload',
 						'insert_image',
 						// 'insert_card',
