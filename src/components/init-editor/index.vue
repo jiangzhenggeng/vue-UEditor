@@ -66,7 +66,9 @@
 			},
 			toolbars: {
 				type: Array,
-				default: window.UEDITOR_CONFIG.toolbars
+				default: function () {
+					return window.UEDITOR_CONFIG.toolbars
+				}
 			}
 		},
 		data() {

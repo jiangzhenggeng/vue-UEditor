@@ -65,7 +65,9 @@
 			},
 			toolbars: {
 				type: Array,
-				default: window.UEDITOR_CONFIG.toolbars
+				default: function () {
+					return window.UEDITOR_CONFIG.toolbars
+				}
 			}
 		},
 		data() {
@@ -85,7 +87,7 @@
 				return 'editor-index-' + window.__ueditorNumber__
 			}
 		},
-		created() {
+		mounted() {
 			var vm = this
 			vm.editor = UE.getEditor(vm.editorId, {
 				toolbars: this.toolbars,
@@ -95,7 +97,7 @@
 					editorBindToolBarTips(vm, this)
 					//添加快捷键
 					bindKeyMap(vm, this)
-                    UE.readyCallBack && UE.readyCallBack()
+					UE.readyCallBack && UE.readyCallBack()
 				}
 			})
 			vm.editor.fullScreen = this.fullScreen

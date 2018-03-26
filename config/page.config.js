@@ -76,6 +76,10 @@ module.exports = [
 	{
 		name: 'product',
 		main: './src/pages/product/main.js',
+		output: {
+			libraryTarget: 'umd',
+			library: '[name]',
+		},
 		options: {
 			filename: path.resolve(__dirname, '../../zdm/protected/modules/admin/views/product/_editor.php'),
 			template: getTplPath('product'),
