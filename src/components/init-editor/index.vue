@@ -130,6 +130,7 @@
 						tempVueTpl.$destroy()
 					}, 'json')
 				})
+				this.$emit('editor-ready', editor)
 			},
 			TriggerClickEvent(eventType) {
 				switch (eventType) {

@@ -44,7 +44,8 @@
       <el-form-item label="卡片类型" prop="type">
         <el-radio-group v-model="ruleForm.type">
           <el-radio :label="0">单品</el-radio>
-          <el-radio :label="1">秒杀</el-radio>
+          <el-radio :label="2">秒杀</el-radio>
+          <el-radio :label="1">其他链接</el-radio>
         </el-radio-group>
       </el-form-item>
 
@@ -77,7 +78,7 @@
           <el-option label="$美元" value="MY"></el-option>
         </el-select>
       </el-form-item>
-      <template v-if="ruleForm.ismiaosha==1">
+      <template v-if="ruleForm.ismiaosha==2">
         <el-form-item label="秒杀时间" prop="currencyname">
           <el-date-picker
             v-model="starttime"
@@ -129,10 +130,10 @@
 	}
 
 	const debounceFn = debounce(function (url) {
-		if(!url || !/^https?:\/\/.+/.test(url)){
-			this.ruleForm.cps =''
+		if (!url || !/^https?:\/\/.+/.test(url)) {
+			this.ruleForm.cps = ''
 			return
-    }
+		}
 		if (this['ruleForm.url.ajax']) {
 			this['ruleForm.url.ajax'].abort &&
 			this['ruleForm.url.ajax'].abort()
@@ -156,7 +157,7 @@
 				title: '错误',
 				message: 'CPS检测出错'
 			});
-			this.ruleForm.cps =''
+			this.ruleForm.cps = ''
 		})
 	}, 500)
 
@@ -187,7 +188,7 @@
 							required: true,
 							validator(rule, value, callback) {
 								value = String(value)
-								if (value != '0' && value != '1') {
+								if (value != '0' && value != '1' && value != '2') {
 									callback(new Error('请选择链接类型'));
 								} else {
 									callback();
@@ -268,8 +269,8 @@
 				}
 			},
 			['ruleForm.type'](type) {
-				if (type == 1) {
-					this.ruleForm.ismiaosha = 1
+				if (type == 2 || type == 1 || type == 0) {
+					this.ruleForm.ismiaosha = type
 				} else {
 					this.ruleForm.ismiaosha = 0
 				}
