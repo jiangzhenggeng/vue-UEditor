@@ -43,6 +43,7 @@
     <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="80px">
       <el-form-item label="卡片类型" prop="type">
         <el-radio-group v-model="ruleForm.type">
+          <!-- 0 单品   1link  2秒杀 -->
           <el-radio :label="0">单品</el-radio>
           <el-radio :label="2">秒杀</el-radio>
           <el-radio :label="1">其他链接</el-radio>
@@ -78,7 +79,7 @@
           <el-option label="$美元" value="MY"></el-option>
         </el-select>
       </el-form-item>
-      <template v-if="ruleForm.ismiaosha==2">
+      <template v-if="ruleForm.ismiaosha">
         <el-form-item label="秒杀时间" prop="currencyname">
           <el-date-picker
             v-model="starttime"
@@ -270,7 +271,13 @@
 			},
 			['ruleForm.type'](type) {
 				if (type == 2 || type == 1 || type == 0) {
-					this.ruleForm.ismiaosha = type
+					this.ruleForm.type = type
+				} else {
+					this.ruleForm.type = 0
+				}
+				//秒杀
+				if (this.ruleForm.type == 2) {
+					this.ruleForm.ismiaosha = 1
 				} else {
 					this.ruleForm.ismiaosha = 0
 				}

@@ -24,9 +24,9 @@
 			editorReady(editor) {
 				let vm = this
 				editor.addListener("contentChange", function () {
-					let tempDiv = document.createElement('div')
-					tempDiv.innerHTML = this.getContent()
-					let nodeListArray = vm.getFormatHtmlToJSON(tempDiv)
+					// let tempDiv = document.createElement('div')
+					// tempDiv.innerHTML = this.getContent()
+					// let nodeListArray = vm.getFormatHtmlToJSON(tempDiv)
 				})
 			},
 			getFormatHtmlToJSON(fragmentDiv) {
