@@ -281,6 +281,29 @@
 				} else {
 					this.ruleForm.ismiaosha = 0
 				}
+				let vm = this
+				if (this.ruleForm.type == 1) {
+					this.rules.price = [
+						{
+							required: false,
+							trigger: 'blur'
+						}
+					]
+				} else {
+					this.rules.price = [
+						{
+							required: true,
+							validator(rule, value, callback) {
+								if (!/^[\d\.]+/.test(value)) {
+									callback(new Error('请填写价格'));
+								} else {
+									callback();
+								}
+							},
+							trigger: 'blur'
+						}
+					]
+				}
 			},
 			['ruleForm.url'](url) {
 				debounceFn.call(this, url)
