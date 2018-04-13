@@ -9,8 +9,6 @@
 
 <script>
 	import InitEditorIndex from '../../../components/init-editor/index'
-	import {flatProcessing} from '../../../common/flatProcessing'
-	import {getFormatHtmlToJSON} from '../../../common/getFormatHtmlToJSON'
 	import content from './content.html'
 
 	export default {
@@ -24,12 +22,8 @@
 		},
 		methods: {
 			editorReady(editor) {
-				editor.addListener("contentChange", function () {
-					let tempDiv = document.createElement('div')
-					tempDiv.innerHTML = this.getContent()
-					let nodeListArray = flatProcessing(getFormatHtmlToJSON(tempDiv))
-					console.log(nodeListArray)
-				})
+
+
 			}
 		}
 	}

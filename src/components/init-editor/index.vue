@@ -41,13 +41,16 @@
 </template>
 
 <script>
-	import {mapState, mapActions} from 'vuex'
+	import {mapActions} from 'vuex'
 	import InertVideo from './components/insert-video.vue'
 	import InertImage from './components/insert-image.vue'
 	import InertCard from './components/insert-card.vue'
 	import InertLink from './components/insert-link.vue'
 	import ProductList from './product-list'
-	import tools from '../../tools'
+
+	import {flatProcessing} from '../../common/flatProcessing'
+	import {getFormatHtmlToJSON} from '../../common/getFormatHtmlToJSON'
+
 	import $ from 'jquery'
 
 	export default {
@@ -130,6 +133,30 @@
 						tempVueTpl.$destroy()
 					}, 'json')
 				})
+
+
+				editor.addListener("setValue", (eventType, content) => {
+					if (this.editorTextareaJson) {
+						let tempDiv = document.createElement('div')
+						tempDiv.innerHTML = content
+						this.editorTextareaJson.value = JSON.stringify(flatProcessing(getFormatHtmlToJSON(tempDiv)) || [])
+					}
+				})
+
+				if (
+					!editor.textarea.previousSibling ||
+					editor.textarea.previousSibling.tagName !== 'TEXTAREA'
+				) {
+					var newTextarea = document.createElement('textarea')
+					newTextarea.setAttribute('name', editor.textarea.getAttribute('name') + '[json]')
+					newTextarea.setAttribute('style', 'height:0;width:0;opacity:0.01')
+					editor.textarea.parentNode.insertBefore(newTextarea, editor.textarea)
+					this.editorTextareaJson = newTextarea
+					setTimeout(() => {
+						editor.fireEvent("setValue", editor.getContent())
+					}, 666)
+				}
+
 				this.$emit('editor-ready', editor)
 			},
 			TriggerClickEvent(eventType) {
