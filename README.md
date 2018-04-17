@@ -1,6 +1,8 @@
 # home
 
 > A Vue.js project
+预览地址
+https://jiangzhenggeng.github.io/vue-UEditor/
 
 ## Build Setup
 
