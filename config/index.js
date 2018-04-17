@@ -60,7 +60,7 @@ module.exports = {
         changeOrigin: true
       },
       '/cdn': {
-        target: 'http://cdn.jiguo.com',
+        target: 'https://cdn.jiguo.com',
         secure: true,
         pathRewrite: {
           '^/cdn': '/'

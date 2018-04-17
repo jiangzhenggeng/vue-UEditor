@@ -25,7 +25,7 @@ const whitList = require('./config/whitlist');
  */
 var URL, UPLOAD_URL;
 if (process.env.NODE_ENV == 'production') {
-  URL = 'http://cdn.jiguo.com/admin@2.0/UEditor/';
+  URL = 'https://cdn.jiguo.com/admin@2.0/UEditor/';
   UPLOAD_URL = '/protected/extensions/editor/';
 } else {
   URL = 'http://localhost:8080/UEditor/';
