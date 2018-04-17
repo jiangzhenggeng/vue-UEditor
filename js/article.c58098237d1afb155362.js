@@ -35257,7 +35257,7 @@ const whitList = __webpack_require__("15QJ");
  */
 var URL, UPLOAD_URL;
 if (true) {
-  URL = 'http://cdn.jiguo.com/admin@2.0/UEditor/';
+  URL = 'https://cdn.jiguo.com/admin@2.0/UEditor/';
   UPLOAD_URL = '/protected/extensions/editor/';
 } else {
   URL = 'http://localhost:8080/UEditor/';
