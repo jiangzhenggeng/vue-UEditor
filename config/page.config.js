@@ -1,5 +1,5 @@
 var path = require('path')
-var basePath = path.resolve(__dirname, '../../jiguo/protected/modules/mb/views')
+var basePath = path.resolve(__dirname, '../dist')
 
 function getTplPath(module) {
 	return path.resolve(__dirname, `../src/pages/${module}/block_tpl/index.ejs.js`)
@@ -34,7 +34,7 @@ module.exports = [
 		name: 'article',
 		main: './src/pages/article/main.js',
 		options: {
-			filename: path.resolve(__dirname, '../../zdm/protected/modules/admin/views/article/_editor.php'),
+			filename: path.resolve(__dirname, '../dist/index.html'),
 			template: getTplPath('article'),
 			minify: {
 				removeComments: true,
@@ -48,70 +48,6 @@ module.exports = [
 		externals: {
 			'vue': 'Vue',
 			'vuex': 'Vuex',
-			'vue-router': 'VueRouter'
-		},
-		subModel: {
-			'UEditor': './static/UEditor/index.js'
-		}
-	},
-	{
-		name: 'article2',
-		main: './src/pages/article2/main.js',
-		options: {
-			filename: path.resolve(__dirname, '../../zdm/protected/modules/admin2/views/article/_editor.php'),
-			template: getTplPath('article2'),
-			minify: {
-				removeComments: true,
-				collapseWhitespace: true,
-				removeAttributeQuotes: false
-			},
-			chunksSortMode,
-		},
-		//不允许集体打包方案
-		notpackage: true,
-		subModel: {
-			'UEditor': './static/UEditor/index.js'
-		}
-	},
-	{
-		name: 'product',
-		main: './src/pages/product/main.js',
-		output: {
-			libraryTarget: 'umd',
-			library: '[name]',
-		},
-		options: {
-			filename: path.resolve(__dirname, '../../zdm/protected/modules/admin/views/product/_editor.php'),
-			template: getTplPath('product'),
-			minify: {
-				removeComments: true,
-				collapseWhitespace: true,
-				removeAttributeQuotes: false
-			},
-			chunksSortMode,
-		},
-		//不允许集体打包方案
-		notpackage: true,
-		subModel: {
-			'UEditor': './static/UEditor/index.js'
-		}
-	},
-	{
-		name: 'uiDevel',
-		main: './src/pages/uiDevel/main.js',
-		options: {
-			filename: path.resolve(__dirname, '../dist/index.html'),
-			template: getTplPath('uiDevel'),
-			minify: {
-				removeComments: true,
-				collapseWhitespace: true,
-				removeAttributeQuotes: false
-			}
-		},
-		//不允许集体打包方案
-		notpackage: true,
-		externals: {
-			'vue': 'Vue',
 			'vue-router': 'VueRouter'
 		}
 	}

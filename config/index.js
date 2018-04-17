@@ -6,9 +6,9 @@ module.exports = {
   page: require('./page.config'),
   build: {
     env: require('./prod.env'),
-		assetsRoot: path.resolve(__dirname, '../../cdn/admin@2.0'),
+		assetsRoot: path.resolve(__dirname, '../dist'),
 		assetsSubDirectory: '',
-		assetsPublicPath: 'http://cdn.jiguo.com/admin@2.0/',
+		assetsPublicPath: './',
     productionSourceMap: true,
     // Gzip off by default as many popular static hosts such as
     // Surge or Netlify already gzip all static assets for you.
